@@ -70,8 +70,9 @@ primary-source links in `tests/golden/corpus.py`):
   — a surprise-examination failure; *Hi2 Investment Management* (IA-6691-S,
   $75,000) — Custody Rule violated on 17 occasions.
 - **MNPI** (§204A): *Sound Point Capital Management* (Release 2024-106, $1.8M) —
-  CLO trading while holding creditors'-committee MNPI; *Marathon Asset
-  Management* (IA-6737, $1.5M) — creditors'-committee MNPI controls.
+  a §204A/206(4)-7 controls failure re: MNPI from lender groups / creditors'
+  committees (the SEC found no trading on MNPI); *Marathon Asset Management*
+  (Release 2024-158 / order IA-6737, $1.5M) — creditors'-committee MNPI controls.
 - **Cherry-picking** (§206): *J.S. Oliver Capital Management / Ian O. Mausner*
   (charged Release 2013-168; **settled May 2019, Release 33-10639, ~$669,965
   disgorgement** — the earlier litigated sanctions were stayed and superseded;

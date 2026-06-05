@@ -17,9 +17,9 @@ Engineering reference, not legal/compliance advice — the deployer's compliance
 function owns the determination.
 
 Regulatory anchor (honest claim layer): **Advisers Act §206(1),(2),(4)**.
-Enforcement backdrop: SEC v. J.S. Oliver Capital Management (Release 2013-168;
-final IA-5368-S) and SEC v. Michael Breton / Strategic Capital Management
-(Release 2017-32) — both cherry-picking matters. See
+Enforcement backdrop: SEC v. J.S. Oliver Capital Management / Mausner (charged
+Release 2013-168; settled 2019, Release 33-10639) and SEC v. Michael Breton /
+Strategic Capital Management (Release 2017-32) — both cherry-picking matters. See
 ``docs/regulatory/obligation_map.md``.
 """
 

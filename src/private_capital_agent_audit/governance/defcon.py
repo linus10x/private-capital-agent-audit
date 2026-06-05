@@ -63,7 +63,13 @@ def _target_from_metrics(m: RiskMetrics) -> DEFCON:
     """
     # Fail safe on a corrupted risk feed: a non-finite (NaN/inf) metric escapes
     # every threshold comparison, so treat it as a HALT condition, not NORMAL.
-    if not (math.isfinite(m.portfolio_drawdown) and math.isfinite(m.daily_loss)):
+    # Covers all three drivers — ``consecutive_losses`` is typed int but Python
+    # does not enforce it, and a NaN there would otherwise return NORMAL.
+    if not (
+        math.isfinite(m.portfolio_drawdown)
+        and math.isfinite(m.daily_loss)
+        and math.isfinite(m.consecutive_losses)
+    ):
         return DEFCON.HALT
     if m.portfolio_drawdown >= 0.20 or m.daily_loss >= 0.10 or m.consecutive_losses >= 8:
         return DEFCON.HALT

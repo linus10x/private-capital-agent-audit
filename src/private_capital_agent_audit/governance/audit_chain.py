@@ -31,6 +31,7 @@ deployer wires (see ``docs/FAILURE-MODES.md``).
 
 from __future__ import annotations
 
+import copy
 import hashlib
 import json
 import threading
@@ -208,7 +209,12 @@ class AuditChain:
         return len(self._store)
 
     def events(self) -> list[AuditEvent]:
-        """A shallow copy of the event list (frozen events; safe to read)."""
+        """A shallow copy of the event list for reading.
+
+        The :class:`AuditEvent` objects are frozen, but ``payload`` is a dict —
+        do not mutate ``event.payload`` in place; any such mutation invalidates
+        the event's hash and is reported by :meth:`verify` as tamper.
+        """
         return list(self._store)
 
     # -- genesis ----------------------------------------------------------
@@ -256,14 +262,18 @@ class AuditChain:
         payload: dict[str, Any],
         actor_id: str | None = None,
     ) -> AuditEvent:
-        """Append one event, chaining it to the current head."""
+        """Append one event, chaining it to the current head.
+
+        The ``payload`` is deep-copied so a caller who reuses or mutates the dict
+        they passed cannot retroactively invalidate the stored (hashed) event.
+        """
         with self._lock:
             event = AuditEvent(
                 sequence=len(self._store),
                 event_type=event_type,
                 autonomy_level=autonomy_level,
                 agent_id=agent_id,
-                payload=payload,
+                payload=copy.deepcopy(payload),
                 timestamp=_now_iso(),
                 prev_hash=self.chain_head(),
                 actor_id=actor_id,

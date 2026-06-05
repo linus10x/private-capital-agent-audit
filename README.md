@@ -48,7 +48,7 @@ with a primary-sourced regulatory anchor (see
 | Control | Anchor | What it does |
 |---|---|---|
 | **Best execution** (`BestExecutionGate`) | §206 duty of care (IA-5248) | Gates an order's release on a *systematic* best-execution review — qualitative factors evaluated, slippage within tolerance. |
-| **MNPI surveillance** (`MNPISurveillance`) | §204A; Exchange Act §10(b) / Rule 10b-5 | Restricted/watch lists + an information barrier; a restricted-name order is **blocked** and the breach recorded. |
+| **MNPI surveillance** (`MNPISurveillance`) | §204A; Exchange Act §10(b) / Rule 10b-5 | Restricted/watch lists + an information barrier; a restricted-name order screens **BLOCKED** and the breach is recorded (wiring that to the sovereign veto to stop the order is the deployer's integration). |
 | **Custody rule** (`CustodyRuleCheck`) | 17 CFR 275.206(4)-2 | Assesses qualified-custodian, account-statement, and surprise-exam posture, including the pooled-vehicle audit exception (120-day window; 180 days for a fund of funds). |
 | **Marketing rule** (`MarketingReviewGate`) | 17 CFR 275.206(4)-1 | Gates distribution on reviewer-asserted attributes — the three hypothetical-performance conditions, testimonial disclosure, and gross-vs-net at equal prominence. |
 | **Allocation fairness** (`AllocationFairnessMonitor`) | §206(1),(2),(4) | Flags cherry-picking — disproportionate favorable fills to favored or proprietary accounts. |
@@ -134,7 +134,7 @@ The suite is layered, not a handful of happy-path checks (`pytest`):
   primary-source URL or is marked `UNVERIFIED`.
 - **Mutation** (`scripts/mutation_check.py`) over the load-bearing predicates;
   every targeted mutant is killed.
-- **Coverage gate** at `--cov-fail-under=90` (a floor, not a ceiling).
+- **Coverage gate in CI** at `--cov-fail-under=90` (a floor, not a ceiling).
 
 ## Install
 

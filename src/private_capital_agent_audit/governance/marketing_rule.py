@@ -14,7 +14,7 @@ sub-paragraph for each:
   provides sufficient information about the criteria and assumptions used —
   **(d)(6)(ii)**; and (iii) provides sufficient information about the risks and
   limitations of using the hypothetical performance — **(d)(6)(iii)**.
-* **Testimonials / endorsements** — **(b)** — require clear-and-prominent
+* **Testimonials / endorsements** — **(b)(1)** — require clear-and-prominent
   disclosure of the promoter relationship and any compensation.
 * **Performance** — **(d)(1)** — prohibits presenting *gross* performance unless
   *net* performance is shown with at least equal prominence (the trigger is
@@ -101,7 +101,7 @@ class MarketingReviewGate:
         if ad.contains_testimonial and not ad.testimonial_has_disclosure:
             violations.append(
                 "testimonial/endorsement without clear-and-prominent relationship and "
-                "compensation disclosure (206(4)-1(b))"
+                "compensation disclosure (206(4)-1(b)(1))"
             )
 
         # (d)(1) is triggered by presenting GROSS performance; the cure is net at

@@ -116,7 +116,8 @@ MNPI_SURVEILLANCE = Obligation(
     primary_source_url="https://www.law.cornell.edu/uscode/text/15/80b-4a",
     verified=True,
     summary=(
-        "Every adviser must establish, maintain, and enforce written policies "
+        "Every adviser subject to §204 (registered advisers and exempt reporting "
+        "advisers) must establish, maintain, and enforce written policies "
         "reasonably designed to prevent the misuse of MNPI; insider-trading "
         "liability anchors in Exchange Act §10(b) and Rule 10b-5."
     ),
@@ -146,7 +147,8 @@ CUSTODY_RULE = Obligation(
         "An adviser with custody must use a qualified custodian, ensure clients "
         "receive account statements, and obtain an annual surprise examination — "
         "unless the pooled-vehicle (private-fund) audit exception applies (annual "
-        "GAAP audit + audited financials to investors within 120 days)."
+        "GAAP audit + audited financials to investors within 120 days; 180 days "
+        "for a fund of funds, per SEC staff guidance — not rule text)."
     ),
 )
 

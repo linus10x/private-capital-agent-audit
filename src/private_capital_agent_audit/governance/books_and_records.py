@@ -26,6 +26,7 @@ off-channel-communications recordkeeping wave — SEC Press Releases 2022-174
 
 from __future__ import annotations
 
+import math
 from dataclasses import dataclass, field
 
 from private_capital_agent_audit.governance.audit_chain import AuditChain
@@ -123,7 +124,14 @@ class BooksAndRecordsMonitor:
     def evaluate_retention(self, record: RecordRetention) -> RecordkeepingFinding:
         """Flag retention exceptions under the 5-year / first-2-years-accessible rule."""
         reasons: list[str] = []
-        if record.disposed and record.age_years < RETENTION_YEARS_MIN:
+        # Fail closed on a non-finite age: a NaN escapes every `<` comparison and
+        # would otherwise report a record of unknown age as compliant.
+        if not math.isfinite(record.age_years):
+            reasons.append(
+                f"record age is non-finite ({record.age_years}); cannot evaluate "
+                "retention — recordkeeping exception (275.204-2(e)(1))"
+            )
+        elif record.disposed and record.age_years < RETENTION_YEARS_MIN:
             reasons.append(
                 f"record disposed at {record.age_years:.1f}y; minimum retention is "
                 f"{RETENTION_YEARS_MIN}y (275.204-2(e)(1))"

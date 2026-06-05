@@ -33,7 +33,7 @@ for autonomous AI agents at SEC-registered investment advisers.
 - **Test suite**: unit + contract, property-based (`hypothesis`), the five
   AL-PROBES, a golden corpus of real public SEC enforcement actions, a
   combinatorial matrix, and a deterministic mutation pass
-  (`scripts/mutation_check.py`). Coverage gate `--cov-fail-under=90`.
+  (`scripts/mutation_check.py`). CI coverage gate `--cov-fail-under=90`.
 - Zero runtime dependencies; `ruff` + `mypy --strict` clean; MIT OR Apache-2.0.
 
 [0.1.0]: https://github.com/linus10x/private-capital-agent-audit/releases/tag/v0.1.0

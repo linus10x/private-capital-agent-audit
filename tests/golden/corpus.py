@@ -151,8 +151,10 @@ MNPI = (
         date="2024-08-26",
         sec_release="2024-106",
         outcome=(
-            "$1.8 million civil penalty + cease-and-desist. Traded CLOs while on lender "
-            "groups / creditors' committees holding MNPI; §204A controls failure."
+            "$1.8 million civil penalty + cease-and-desist. §204A + §206(4)/Rule 206(4)-7 "
+            "controls failure: came into possession of MNPI via lender groups / creditors' "
+            "committees without policies reasonably designed to prevent its misuse. The SEC "
+            "found NO evidence of trading on MNPI — the charge was the controls failure."
         ),
         obligation_id="mnpi_surveillance",
         primary_source_url="https://www.sec.gov/newsroom/press-releases/2024-106",
@@ -162,14 +164,14 @@ MNPI = (
         matter_id="mnpi_marathon_2024",
         name="Marathon Asset Management, LP — creditors'-committee MNPI controls",
         date="2024-09-30",
-        sec_release="IA-6737",  # administrative order (file 3-22219); no numbered press release
+        sec_release="2024-158",  # press release; administrative order IA-6737 (file 3-22219)
         outcome=(
-            "Cease-and-desist + $1.5 million civil penalty. §204A + 206(4)/206(4)-7 — "
-            "generic insider-trading procedures not tailored to ad-hoc creditors'-committee "
+            "Cease-and-desist + censure + $1.5 million civil penalty. §204A + 206(4)/206(4)-7 "
+            "— generic insider-trading procedures not tailored to ad-hoc creditors'-committee "
             "MNPI risk."
         ),
         obligation_id="mnpi_surveillance",
-        primary_source_url="https://www.sec.gov/files/litigation/admin/2024/ia-6737.pdf",
+        primary_source_url="https://www.sec.gov/newsroom/press-releases/2024-158",
         verified=True,
     ),
 )
@@ -205,7 +207,7 @@ ALLOCATION = (
             "losses to clients via a master account; barred. Detected via SEC data analytics."
         ),
         obligation_id="allocation_fairness",
-        primary_source_url="https://www.sec.gov/news/pressrelease/2017-32.html",
+        primary_source_url="https://www.sec.gov/newsroom/press-releases/2017-32",
         verified=True,
     ),
 )

@@ -95,9 +95,12 @@ def _canonical_json(obj: Any) -> str:
     """Deterministic JSON: sorted keys, no insignificant whitespace.
 
     The same logical event always serializes to the same bytes, so the hash is
-    reproducible across processes and machines.
+    reproducible across processes and machines. No ``default=`` coercion is used:
+    a non-JSON-serializable payload value RAISES at hash time rather than being
+    silently stringified (which could collide ``{"v": obj}`` with ``{"v": str(obj)}``
+    in the hash preimage). Payloads are contractually JSON-safe dicts.
     """
-    return json.dumps(obj, sort_keys=True, separators=(",", ":"), default=str)
+    return json.dumps(obj, sort_keys=True, separators=(",", ":"))
 
 
 @dataclass(frozen=True)

@@ -135,6 +135,27 @@ MUTANTS: tuple[Mutant, ...] = (
         "if not arrangement.surprise_exam_current:",
         "if False:",
     ),
+    # control — custody negative-day-count guard (round-3 fail-closed)
+    Mutant(
+        "custody_negative_days_guard",
+        f"{GOV}/custody_rule.py",
+        "if days is not None and days < 0:",
+        "if False:",
+    ),
+    # control — books-and-records NaN-age fail-closed (round-3)
+    Mutant(
+        "books_nan_age_guard",
+        f"{GOV}/books_and_records.py",
+        "if not math.isfinite(record.age_years):",
+        "if False:",
+    ),
+    # P4 — DEFCON non-finite consecutive_losses fail-safe (round-3)
+    Mutant(
+        "defcon_consecutive_finite",
+        f"{GOV}/defcon.py",
+        "and math.isfinite(m.consecutive_losses)",
+        "and True",
+    ),
 )
 
 

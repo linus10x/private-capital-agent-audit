@@ -72,6 +72,12 @@ class CustodyRuleCheck:
 
     def assess(self, arrangement: CustodyArrangement) -> CustodyAssessment:
         """Return a compliance assessment with any custody-rule exceptions."""
+        days = arrangement.days_to_distribute_audited_financials
+        if days is not None and days < 0:
+            raise ValueError(
+                "days_to_distribute_audited_financials must be non-negative "
+                "(a negative distribution lag is a data error)"
+            )
         if not arrangement.has_custody:
             assessment = CustodyAssessment(
                 client_id=arrangement.client_id,
@@ -95,7 +101,6 @@ class CustodyRuleCheck:
         # applicable window: 120 days (rule text) or 180 days for a fund of funds
         # (SEC staff guidance).
         window = 180 if arrangement.is_fund_of_funds else 120
-        days = arrangement.days_to_distribute_audited_financials
         distributed_in_time = (
             arrangement.audited_financials_distributed and days is not None and days <= window
         )
