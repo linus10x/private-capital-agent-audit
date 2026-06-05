@@ -13,6 +13,9 @@ disproportionate share of the favorable fills beyond a deployer-set tolerance.
 It does not adjudicate intent; it surfaces the statistical asymmetry an examiner
 (or the SEC's own trade-allocation analytics) would flag.
 
+Engineering reference, not legal/compliance advice — the deployer's compliance
+function owns the determination.
+
 Regulatory anchor (honest claim layer): **Advisers Act §206(1),(2),(4)**.
 Enforcement backdrop: SEC v. J.S. Oliver Capital Management (Release 2013-168;
 final IA-5368-S) and SEC v. Michael Breton / Strategic Capital Management

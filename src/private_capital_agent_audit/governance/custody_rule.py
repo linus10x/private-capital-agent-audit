@@ -12,11 +12,18 @@ Two compliance paths are modeled, exactly as the rule provides:
    annual **surprise examination** by an independent public accountant.
 2. **Pooled-vehicle (private-fund) audit exception** — an annual GAAP audit with
    audited financial statements distributed to investors **within 120 days** of
-   fiscal year-end substitutes for the surprise examination.
+   fiscal year-end (rule text, 206(4)-2(b)(4)) substitutes for the surprise
+   examination. For a **fund of funds**, SEC staff guidance (the Division's
+   Custody Rule FAQ) extends the distribution window to **180 days**, because a
+   fund of funds cannot finalize its audit until the underlying funds' audits
+   complete. The control branches the window on ``is_fund_of_funds`` so a
+   compliant fund of funds distributing at, say, day 165 is not false-flagged.
 
-Regulatory anchor (honest claim layer): **17 CFR 275.206(4)-2**. Enforcement
-backdrop: custody-rule surprise-exam failures (e.g. SEC, *Munakata Associates*,
-IA-6901-S, 2024). See ``docs/regulatory/obligation_map.md``.
+Engineering reference, not legal/compliance advice — the deployer's compliance
+function owns the determination. Regulatory anchor: **17 CFR 275.206(4)-2**
+(the 180-day fund-of-funds window is SEC staff guidance, NOT rule text).
+Enforcement backdrop: custody-rule surprise-exam failures (e.g. SEC,
+*Munakata Associates*, IA-6901-S). See ``docs/regulatory/obligation_map.md``.
 """
 
 from __future__ import annotations
@@ -42,8 +49,11 @@ class CustodyArrangement:
     account_statements_delivered: bool
     surprise_exam_current: bool
     is_pooled_vehicle: bool = False
+    is_fund_of_funds: bool = False
     audited_financials_distributed: bool = False
-    audited_within_120_days: bool = False
+    # Actual days from fiscal year-end to distribution of audited financials
+    # (None if not distributed). Compared against the applicable window.
+    days_to_distribute_audited_financials: int | None = None
 
 
 @dataclass(frozen=True)
@@ -76,29 +86,38 @@ class CustodyRuleCheck:
         if not arrangement.qualified_custodian:
             exceptions.append("client assets not held with a qualified custodian (206(4)-2(a)(1))")
         if not arrangement.account_statements_delivered:
-            exceptions.append("account statements not delivered to clients (206(4)-2(a)(2)/(3))")
+            # The quarterly account-statements obligation is (a)(3); (a)(2) is the
+            # separate written notice of the qualified custodian.
+            exceptions.append("account statements not delivered to clients (206(4)-2(a)(3))")
 
         # The surprise-exam requirement can be satisfied by the pooled-vehicle
-        # audit exception, but only when BOTH the audit was distributed AND it
-        # met the 120-day window.
-        audit_exception_met = (
-            arrangement.is_pooled_vehicle
-            and arrangement.audited_financials_distributed
-            and arrangement.audited_within_120_days
+        # audit exception, but only when the audit was distributed within the
+        # applicable window: 120 days (rule text) or 180 days for a fund of funds
+        # (SEC staff guidance).
+        window = 180 if arrangement.is_fund_of_funds else 120
+        days = arrangement.days_to_distribute_audited_financials
+        distributed_in_time = (
+            arrangement.audited_financials_distributed and days is not None and days <= window
         )
+        audit_exception_met = arrangement.is_pooled_vehicle and distributed_in_time
         if audit_exception_met:
             path = "audit_exception"
         else:
             path = "standard"
-            # Distributed but missed the 120-day window — a real, common exception.
+            # Distributed but missed the applicable window — a real, common exception.
             if (
                 arrangement.is_pooled_vehicle
                 and arrangement.audited_financials_distributed
-                and not arrangement.audited_within_120_days
+                and not distributed_in_time
             ):
+                window_basis = (
+                    "180 days (fund-of-funds, per SEC staff guidance)"
+                    if (arrangement.is_fund_of_funds)
+                    else "120 days (206(4)-2(b)(4))"
+                )
                 exceptions.append(
-                    "pooled-vehicle audited financials not distributed within 120 days "
-                    "(206(4)-2(b)(4)); audit exception NOT met"
+                    f"pooled-vehicle audited financials not distributed within {window_basis}; "
+                    "audit exception NOT met"
                 )
             if not arrangement.surprise_exam_current:
                 exceptions.append(

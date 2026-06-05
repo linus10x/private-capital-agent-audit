@@ -35,12 +35,18 @@ How each primitive and control fails, and what the deployer must do about it.
   differs at an anchored sequence), **truncation below any anchored sequence**
   (the event is gone), and a **rewrite at an anchored position**. Production mode
   requires a witness register.
-- **Tail truncation after the last anchor is the irreducible residual.** Events
-  appended *after the most recent anchor* and then dropped cannot be detected
-  internally — no append-only log can prove the existence of events that were
-  never witnessed. *Mitigation:* anchor cadence. Anchor frequently; for the
-  strictest assurance, anchor on (or immediately after) every consequential
-  append, so the witness always holds a checkpoint at or near the true head.
+- **The unwitnessed tail is the irreducible residual — for both truncation AND
+  rewrite.** `verify()` commits to every event *via its successor's `prev_hash`*,
+  so the **last** event (no successor) can be rewritten-and-restamped, or dropped,
+  and `verify()` still passes. `anchor_to_witness()` therefore anchors the
+  *anchor event itself* (its `(sequence, event_hash)`), making the witnessed
+  checkpoint the current tail: after an anchor, a rewrite or truncation of the
+  head is caught by `verify_regeneration_resistant()`. The residual is only the
+  events appended *after the most recent anchor* — no append-only log can prove
+  the existence of events that were never witnessed. *Mitigation:* anchor cadence.
+  Anchor frequently; for the strictest assurance, anchor on (or immediately after)
+  every consequential append, and use `head_is_witnessed()` to confirm nothing is
+  pending before relying on `verify()`.
 - **Torn tail on load.** A crash mid-append can leave a malformed trailing JSONL
   line. `_load` loads the valid prefix and sets a corrupt-tail flag; `verify()`
   returns `False` and `verify_strict()` raises rather than bricking on

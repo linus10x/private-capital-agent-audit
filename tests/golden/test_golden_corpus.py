@@ -95,7 +95,8 @@ def test_marketing_hypothetical_performance_matter_is_flagged() -> None:
             contains_hypothetical_performance=True,
             has_hypothetical_policies=False,
             has_relevance_to_audience=False,
-            has_risk_disclosures=False,
+            has_criteria_assumptions_info=False,
+            has_risk_limitations_info=False,
         )
     )
     assert review.approved is False

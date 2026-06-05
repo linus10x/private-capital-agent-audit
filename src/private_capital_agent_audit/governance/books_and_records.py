@@ -5,14 +5,17 @@ obligations:
 
 1. **Retention** — required records must be retained at least 5 years, the first
    2 of them readily accessible. The control evaluates a record's retention
-   posture and flags a record that is past-due-for-disposal-but-still-needed or
-   not in an accessible tier within the first-two-years window.
+   posture and flags a record disposed of before the 5-year minimum, or one not
+   held in an accessible tier within the first-two-years window.
 2. **Off-channel communications** — a business communication sent over a channel
    the firm does not capture (personal text/messaging app) is the recordkeeping
    failure mode behind the 9-figure SEC enforcement wave. The control flags a
    communication on a non-approved channel that was not captured, so an
    autonomous agent's outbound (or an ingested inbound) on an uncaptured channel
    is surfaced rather than silently lost.
+
+Engineering reference, not legal/compliance advice — the deployer's compliance
+function owns the determination.
 
 Regulatory anchor (honest claim layer): **17 CFR 275.204-2** (and, where
 dually-registered, Exchange Act Rule 17a-4). Enforcement backdrop: the
@@ -123,7 +126,7 @@ class BooksAndRecordsMonitor:
         if record.disposed and record.age_years < RETENTION_YEARS_MIN:
             reasons.append(
                 f"record disposed at {record.age_years:.1f}y; minimum retention is "
-                f"{RETENTION_YEARS_MIN}y (275.204-2(e))"
+                f"{RETENTION_YEARS_MIN}y (275.204-2(e)(1))"
             )
         if (
             not record.disposed
@@ -132,7 +135,7 @@ class BooksAndRecordsMonitor:
         ):
             reasons.append(
                 f"record within the first {ACCESSIBLE_YEARS_MIN} years not held in a "
-                f"readily accessible tier (275.204-2(e))"
+                f"readily accessible tier (275.204-2(e)(1))"
             )
 
         finding = RecordkeepingFinding(

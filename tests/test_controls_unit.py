@@ -242,11 +242,47 @@ def test_custody_audit_exception_met() -> None:
             surprise_exam_current=False,
             is_pooled_vehicle=True,
             audited_financials_distributed=True,
-            audited_within_120_days=True,
+            days_to_distribute_audited_financials=100,  # within 120
         )
     )
     assert a.compliant is True
     assert a.path == "audit_exception"
+
+
+def test_custody_fund_of_funds_180_day_window() -> None:
+    # A fund of funds distributing at day 165 is COMPLIANT (180-day staff window),
+    # not a false exception — the defect the regulatory chamber flagged.
+    check = CustodyRuleCheck()
+    fof = check.assess(
+        CustodyArrangement(
+            "fof",
+            has_custody=True,
+            qualified_custodian=True,
+            account_statements_delivered=True,
+            surprise_exam_current=False,
+            is_pooled_vehicle=True,
+            is_fund_of_funds=True,
+            audited_financials_distributed=True,
+            days_to_distribute_audited_financials=165,
+        )
+    )
+    assert fof.compliant is True
+    assert fof.path == "audit_exception"
+    # The same 165 days for a NON-fund-of-funds (120-day window) is an exception.
+    not_fof = check.assess(
+        CustodyArrangement(
+            "pe",
+            has_custody=True,
+            qualified_custodian=True,
+            account_statements_delivered=True,
+            surprise_exam_current=False,
+            is_pooled_vehicle=True,
+            is_fund_of_funds=False,
+            audited_financials_distributed=True,
+            days_to_distribute_audited_financials=165,
+        )
+    )
+    assert not_fof.compliant is False
 
 
 def test_custody_audit_exception_missed_window() -> None:
@@ -261,7 +297,7 @@ def test_custody_audit_exception_missed_window() -> None:
             surprise_exam_current=False,
             is_pooled_vehicle=True,
             audited_financials_distributed=True,
-            audited_within_120_days=False,
+            days_to_distribute_audited_financials=150,  # missed 120
         )
     )
     assert a.compliant is False
@@ -292,16 +328,29 @@ def test_custody_missing_qualified_custodian_and_statements() -> None:
 def test_marketing_clean_ad_approved() -> None:
     chain = AuditChain(deployer_id="d")
     gate = MarketingReviewGate(audit_chain=chain)
-    r = gate.review(Advertisement("ad", contains_performance=True, performance_net_of_fees=True))
+    r = gate.review(
+        Advertisement("ad", shows_gross_performance=True, shows_net_at_equal_prominence=True)
+    )
     assert r.approved is True
     assert any(e.event_type is AuditEventType.MARKETING_REVIEW for e in chain.events())
+
+
+def test_marketing_net_only_does_not_trigger_d1() -> None:
+    # (d)(1) is triggered by GROSS performance; net-only is fine.
+    gate = MarketingReviewGate()
+    r = gate.review(Advertisement("ad", shows_gross_performance=False))
+    assert r.approved is True
 
 
 def test_marketing_hypothetical_violations() -> None:
     gate = MarketingReviewGate()
     r = gate.review(Advertisement("ad", contains_hypothetical_performance=True))
     assert r.approved is False
-    assert len(r.violations) == 3  # policies, relevance, risk disclosures
+    # (d)(6) has FOUR sub-conditions modeled: policies, relevance, criteria/
+    # assumptions, risk/limitations.
+    assert len(r.violations) == 4
+    assert any("(d)(6)(iii)" in v for v in r.violations)  # risk/limitations cite corrected
+    assert any("(d)(6)(ii)" in v for v in r.violations)  # criteria/assumptions present
 
 
 def test_marketing_testimonial_and_gross_only() -> None:
@@ -311,13 +360,13 @@ def test_marketing_testimonial_and_gross_only() -> None:
             "ad",
             contains_testimonial=True,
             testimonial_has_disclosure=False,
-            contains_performance=True,
-            performance_net_of_fees=False,
+            shows_gross_performance=True,
+            shows_net_at_equal_prominence=False,
         )
     )
     assert r.approved is False
     assert any("testimonial" in v for v in r.violations)
-    assert any("net-of-fees" in v for v in r.violations)
+    assert any("(d)(1)" in v for v in r.violations)
 
 
 # --- allocation fairness ----------------------------------------------------
@@ -404,16 +453,21 @@ def test_books_retention_exceptions() -> None:
 
 def test_obligations_grounded_in_advisers_act() -> None:
     """Every obligation cites the Advisers Act / its rules — the adviser
-    fiduciary regime — and none other."""
+    fiduciary regime — and none other. Tokens are specific (a bare '204' would
+    match almost any CFR-ish string; require the actual adviser-regime cites)."""
+    adviser_cites = (
+        "Advisers Act",  # §206 / §204A / §204-2 narrative
+        "275.",  # 17 CFR Part 275 adviser rules
+        "80b",  # 15 U.S.C. 80b-* Advisers Act
+        "IA-5248",  # the 2019 fiduciary interpretation
+        "10b-5",  # the insider-trading anchor
+        "§204A",  # MNPI policies
+        "§206",  # fiduciary
+    )
     for o in ALL_OBLIGATIONS.values():
-        assert (
-            "Advisers Act" in o.citation
-            or "275." in o.citation
-            or "80b" in o.citation
-            or "IA-5248" in o.citation
-            or "10b-5" in o.citation
-            or "204" in o.citation
-        ), f"{o.obligation_id} not grounded in an adviser-regime cite: {o.citation}"
+        assert any(tok in o.citation for tok in adviser_cites), (
+            f"{o.obligation_id} not grounded in an adviser-regime cite: {o.citation}"
+        )
 
 
 def test_every_sub_vertical_maps_to_real_obligations() -> None:

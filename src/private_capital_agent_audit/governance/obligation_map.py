@@ -32,6 +32,16 @@ from __future__ import annotations
 from dataclasses import dataclass
 from enum import Enum
 
+# Engineering reference, not legal/compliance advice. This map names obligations
+# and cites primary sources for engineering use; it does not determine which
+# obligations apply to any particular adviser or whether one is met. That is a
+# determination only the firm's compliance function and qualified counsel can
+# make. Confirm every obligation against the primary source before relying on it.
+DISCLAIMER = (
+    "Engineering reference, not legal/compliance advice; the deployer's "
+    "compliance function and counsel own the determination."
+)
+
 
 class SubVertical(Enum):
     """The four private-capital sub-verticals this library maps obligations for."""
@@ -120,8 +130,9 @@ ALLOCATION_FAIRNESS = Obligation(
     verified=True,
     summary=(
         "Disproportionately allocating favorably-priced trades to favored or "
-        "proprietary accounts (cherry-picking) is fraud under §206. Allocation "
-        "must be fair and consistent with disclosed policy."
+        "proprietary accounts (cherry-picking) is conduct the SEC has charged as "
+        "fraud under §206. Allocation must be fair and consistent with disclosed "
+        "policy."
     ),
 )
 
@@ -170,15 +181,15 @@ DUTY_OF_CARE_ADVICE = Obligation(
 INDEPENDENT_VALUATION = Obligation(
     obligation_id="independent_valuation",
     title="Independent valuation of fund assets",
-    citation="Advisers Act §206 fiduciary duty; 17 CFR 275.206(4)-2 audit exception",
-    primary_source_url="https://www.ecfr.gov/current/title-17/chapter-II/part-275/section-275.206(4)-2",
+    citation="Advisers Act §206 duty of loyalty (IA-5248); 17 CFR 275.206(4)-2 audit interaction",
+    primary_source_url="https://www.sec.gov/files/rules/interp/2019/ia-5248.pdf",
     verified=True,
     summary=(
-        "Valuation of fund assets bears on the custody-rule audit exception and "
-        "on the §206 duty of loyalty (a conflict where the adviser's fee depends "
-        "on its own marks). Independent valuation is the control that addresses "
-        "the conflict; the specific obligation is conduct-based, not a single "
-        "numbered rule."
+        "Valuation of fund assets implicates the §206 duty of loyalty (a conflict "
+        "where the adviser's fee depends on its own marks) and interacts with the "
+        "custody-rule audit exception. Independent valuation is the control that "
+        "addresses the conflict; the obligation is conduct-based (grounded in the "
+        "§206 fiduciary duty), not a single numbered valuation rule."
     ),
 )
 

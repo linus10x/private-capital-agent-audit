@@ -19,6 +19,13 @@ described conduct. No characterization of any party is asserted beyond the publi
 record, and items that could not be confirmed against a primary source are marked
 `UNVERIFIED`.
 
+**Deploying these controls does not make any firm compliant** with the custody
+rule, the marketing rule, §204A, the books-and-records rule, or any other
+obligation, and creates **no safe harbor**. Whether a firm is compliant is a
+determination only the firm's compliance function and qualified counsel can make.
+The controls act on deployer-supplied inputs; they record and surface, they do
+not independently observe a firm's activity or guarantee any outcome.
+
 The five primitives and seven controls are **reference patterns for adoption**, not
 controls operating in production at any firm and not examined by any regulator.
 Use is at your own risk under the MIT or Apache-2.0 license you select; the

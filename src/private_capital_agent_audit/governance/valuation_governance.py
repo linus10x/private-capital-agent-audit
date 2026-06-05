@@ -19,6 +19,9 @@ It does not price assets, run a valuation model, or judge whether a mark is
 "right" — the valuation committee owns that judgment; this control records it and
 surfaces the unmitigated conflict.
 
+Engineering reference, not legal/compliance advice — the deployer's compliance
+function owns the determination.
+
 Regulatory anchor (honest claim layer): Advisers Act **§206** duty of loyalty;
 the custody rule's audit/valuation interaction (**17 CFR 275.206(4)-2** audit
 exception). See ``docs/regulatory/obligation_map.md``.
@@ -99,6 +102,11 @@ class ValuationGovernanceCheck:
         """Return an assessment with any valuation-governance exceptions."""
         if v.level not in (1, 2, 3):
             raise ValueError("level must be 1, 2, or 3 (fair-value hierarchy)")
+        if v.days_since_last_valuation < 0:
+            raise ValueError(
+                "days_since_last_valuation must be non-negative "
+                "(a future-dated mark is a data error, not a fresh one)"
+            )
         flags: list[str] = []
         requires_independence = self._requires_independence(v)
 

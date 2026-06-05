@@ -112,11 +112,12 @@ CUSTODY = (
     EnforcementMatter(
         matter_id="custody_munakata_ia_6901s",
         name="Munakata Associates — custody-rule surprise-exam failure",
-        date="2024",
+        date="2025-08-01",  # order entered Aug 2025; 2018–2024 is the conduct period
         sec_release="IA-6901-S",
         outcome=(
-            "Cease-and-desist + $50,000 penalty. Firm had custody (signatory authority / "
-            "POA over client accounts) but failed to arrange the required surprise examinations."
+            "Cease-and-desist + $50,000 penalty (neither admit nor deny). Firm had custody "
+            "(signatory authority / POA over client accounts) but failed to arrange the "
+            "required surprise examinations. Conduct period 2018–2024."
         ),
         obligation_id="custody_rule",
         primary_source_url=(
@@ -127,14 +128,17 @@ CUSTODY = (
     EnforcementMatter(
         matter_id="custody_hi2_ia_6691",
         name="Hi2 Investment Management, LLC — custody-rule + compliance findings",
-        date="2024",
-        sec_release="IA-6691",
+        date="2024-09-10",
+        sec_release="IA-6691-S",
         outcome=(
-            "Custody-rule and compliance violations (penalty amount not individually confirmed)."
+            "Cease-and-desist + censure + $75,000 penalty (neither admit nor deny). "
+            "Custody Rule violated on 17 occasions; also 206(4)/206(4)-7 compliance findings."
         ),
         obligation_id="custody_rule",
-        primary_source_url="https://www.sec.gov/files/litigation/admin/2024/ia-6691.pdf",
-        verified=False,
+        primary_source_url=(
+            "https://www.sec.gov/enforcement-litigation/administrative-proceedings/ia-6691-s"
+        ),
+        verified=True,
     ),
 )
 
@@ -158,11 +162,15 @@ MNPI = (
         matter_id="mnpi_marathon_2024",
         name="Marathon Asset Management, LP — creditors'-committee MNPI controls",
         date="2024-09-30",
-        sec_release=None,  # precise release number not confirmed this pass
-        outcome="Cease-and-desist + $1.5 million civil penalty (per public reporting); §204A.",
+        sec_release="IA-6737",  # administrative order (file 3-22219); no numbered press release
+        outcome=(
+            "Cease-and-desist + $1.5 million civil penalty. §204A + 206(4)/206(4)-7 — "
+            "generic insider-trading procedures not tailored to ad-hoc creditors'-committee "
+            "MNPI risk."
+        ),
         obligation_id="mnpi_surveillance",
-        primary_source_url="https://www.sec.gov/litigation/admin",
-        verified=False,
+        primary_source_url="https://www.sec.gov/files/litigation/admin/2024/ia-6737.pdf",
+        verified=True,
     ),
 )
 
@@ -172,16 +180,19 @@ ALLOCATION = (
     EnforcementMatter(
         matter_id="alloc_js_oliver_2013_168",
         name="J.S. Oliver Capital Management, L.P. / Ian O. Mausner — cherry-picking",
-        date="2013-08",
+        date="2013-08",  # charged 2013; SETTLED 2019 (see outcome)
         sec_release="2013-168",
         outcome=(
-            "Charged with allocating favorably-priced post-close trades to affiliated "
-            "funds (alleged ~$10.7M client harm); the ALJ ordered penalties and a bar, "
-            "with figures litigated/modified on review. Cite the primary source for the "
-            "operative amounts."
+            "Charged 2013 (PR 2013-168) with allocating favorably-priced post-close trades "
+            "to affiliated funds (alleged ~$10.7M client harm). The Commission's 2016 "
+            "sanctions (Opinion 33-10121) were stayed on appeal and the matter ultimately "
+            "SETTLED on May 16, 2019 (Release 33-10639): Mausner, neither admitting nor "
+            "denying, agreed to ~$669,965 disgorgement — far below the litigated figures. "
+            "Cite the 2019 settled order for the operative amounts; do NOT quote the "
+            "stayed 2016 figures as final."
         ),
         obligation_id="allocation_fairness",
-        primary_source_url="https://www.sec.gov/newsroom/press-releases/2013-168",
+        primary_source_url="https://www.sec.gov/litigation/admin/2019/33-10639.pdf",
         verified=True,
     ),
     EnforcementMatter(

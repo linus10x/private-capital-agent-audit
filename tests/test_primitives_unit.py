@@ -130,6 +130,46 @@ def test_prev_hash_break_detected() -> None:
     assert chain.verify() is False
 
 
+def test_prev_link_break_isolated_from_hash_and_sequence_checks() -> None:
+    """Break ONLY the prev_hash link: tamper an event's prev_hash AND re-stamp its
+    own event_hash, leaving sequence intact. Now the event's own-hash check passes
+    and its sequence is contiguous — only the prev_hash *link* check can catch the
+    broken chain. This isolates the link check (which the other checks would
+    otherwise mask)."""
+    chain = AuditChain(deployer_id="d")
+    for i in range(3):
+        chain.append(AuditEventType.AGENT_ACTION, AutonomyLevel.A2_DELEGATED, "a", {"i": i})
+    ev = chain.events()[2]
+    object.__setattr__(ev, "prev_hash", "0" * 64)  # wrong link
+    object.__setattr__(ev, "event_hash", ev.compute_hash())  # restamp → own-hash consistent
+    assert ev.sequence == 2  # sequence untouched
+    assert ev.event_hash == ev.compute_hash()  # own-hash check would pass
+    assert chain.verify() is False  # only the prev_hash link check fires
+    with pytest.raises(AuditChainTamperError):
+        chain.verify_strict()
+
+
+def test_sequence_gap_isolated_from_hash_and_link_checks() -> None:
+    """Forge a chain with a SEQUENCE GAP but otherwise-consistent links and
+    hashes: drop a middle event, then re-point and re-stamp the successor so its
+    prev_hash links and its own hash recompute. Now only the sequence-contiguity
+    check can detect that an event is missing (sequence 0,1,3 at indices 0,1,2)."""
+    chain = AuditChain(deployer_id="d")
+    for i in range(3):
+        chain.append(AuditEventType.AGENT_ACTION, AutonomyLevel.A2_DELEGATED, "a", {"i": i})
+    # store == [genesis(0), e0(1), e1(2), e2(3)]; drop e1, then repair the link.
+    del chain._store[2]
+    successor = chain.events()[2]  # was e2, sequence 3, now at index 2
+    predecessor_hash = chain.events()[1].event_hash
+    object.__setattr__(successor, "prev_hash", predecessor_hash)  # link repaired
+    object.__setattr__(successor, "event_hash", successor.compute_hash())  # own-hash repaired
+    # Links and hashes are now internally consistent; only the sequence gap remains.
+    assert successor.sequence == 3  # at index 2 — the gap
+    assert chain.verify() is False  # only the sequence-contiguity check fires
+    with pytest.raises(AuditChainTamperError, match="sequence"):
+        chain.verify_strict()
+
+
 def test_spliced_chain_detected_by_prev_link() -> None:
     """Dropping a middle event leaves every remaining event INTERNALLY consistent
     (its own event_hash still matches its fields), so only the prev_hash *link*

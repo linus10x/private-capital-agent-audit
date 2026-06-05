@@ -56,6 +56,18 @@ MUTANTS: tuple[Mutant, ...] = (
         "if _is_deployer_keyed_genesis(first_event):",
         "if False:",
     ),
+    Mutant(  # sequence-contiguity check (reorder / interior-gap detection)
+        "chain_sequence_check",
+        f"{GOV}/audit_chain.py",
+        "if event.sequence != index:\n                    return False",
+        "if event.sequence != index:\n                    pass",
+    ),
+    Mutant(  # witness checkpoint match (regeneration / truncation / tail-rewrite)
+        "chain_regen_checkpoint",
+        f"{GOV}/audit_chain.py",
+        "if sequence >= n or self._store[sequence].event_hash != head:",
+        "if False:",
+    ),
     # P2 — self-clear + agent-principal guard
     Mutant(
         "veto_self_clear",

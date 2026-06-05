@@ -24,20 +24,20 @@ abstract: >-
   deployer-keyed hash-chain ledger with witness-anchored regeneration
   resistance, a DEFCON risk-state machine with a transition-direction
   guard, and an effective-challenge harness that rejects self-validation
-  — each paired with a committed adversarial probe. Adds six
+  — each paired with a committed adversarial probe. Adds seven
   adviser-native controls: best execution (§206 duty of care), MNPI /
   market-abuse surveillance (§204A; Exchange Act §10(b) / Rule 10b-5),
   the custody rule (17 CFR 275.206(4)-2), the marketing rule (17 CFR
   275.206(4)-1), cross-client allocation fairness / anti-cherry-picking
-  (§206), and books-and-records / off-channel-communications capture
-  (17 CFR 275.204-2). Includes a sub-vertical obligation map with
+  (§206), books-and-records / off-channel-communications capture
+  (17 CFR 275.204-2), and independent-valuation governance (§206 duty of
+  loyalty). Includes a sub-vertical obligation map with
   primary-source-verified citations and a golden corpus of real public
   SEC enforcement actions wired as executable test fixtures. Zero runtime
   dependencies; property-tested; mypy --strict clean. Patterns were
   extracted from a multi-year private quantitative options research
-  program with Marcos López de Prado as named advisor on adjacent work;
-  the source program operates in paper-trading Phase 0 — no live capital
-  has been deployed.
+  program operating in paper-trading Phase 0 — no live capital has been
+  deployed.
 keywords:
   - AI governance
   - autonomous agents

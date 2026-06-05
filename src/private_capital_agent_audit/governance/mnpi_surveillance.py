@@ -12,6 +12,9 @@ This is NOT a deployed surveillance platform and does not infer what is or is
 not MNPI — the deployer (the compliance function) curates the lists. The control
 enforces the *consequence*: restricted-name orders are blocked.
 
+Engineering reference, not legal/compliance advice — the deployer's compliance
+function owns the determination.
+
 Regulatory anchor (honest claim layer): **Advisers Act §204A** (15 U.S.C.
 80b-4a) requires written policies reasonably designed to prevent the misuse of
 MNPI; insider-trading liability anchors in **Exchange Act §10(b)** and **Rule
@@ -34,6 +37,11 @@ from private_capital_agent_audit.schemas.audit_event import AuditEventType, Auto
 _ZERO_WIDTH = dict.fromkeys(
     (0x200B, 0x200C, 0x200D, 0x2060, 0xFEFF), None
 )  # ZWSP, ZWNJ, ZWJ, word-joiner, BOM
+
+# The alphabet a well-formed ticker normalizes to. A normalized symbol with any
+# character outside this set (e.g. a Cyrillic homoglyph 'А' U+0410) is NOT cleared
+# — it is surfaced, because NFKC does not fold cross-script look-alikes.
+_ALLOWED_SYMBOL_CHARS = frozenset("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.-/")
 
 
 class ListType(Enum):
@@ -71,25 +79,37 @@ class MNPISurveillance:
 
     @staticmethod
     def _norm(symbol: str) -> str:
-        """Aggressively normalize a symbol so homoglyph / zero-width / whitespace
-        splicing cannot slip a restricted name past the exact-match barrier.
+        """Normalize a symbol so zero-width / compatibility / whitespace splicing
+        cannot slip a restricted name past the exact-match barrier.
 
         NFKC folds fullwidth and compatibility forms (e.g. a fullwidth ``AAPL``
         normalizes to ASCII ``AAPL``); the zero-width set is stripped; ``split()``
         removes every Unicode whitespace run (including NBSP / ideographic space).
-        The SAME normalization is applied on ``add`` and on ``screen_order`` so a
-        restricted ``AAPL`` blocks an order whose symbol was spliced with a
-        zero-width space or rendered in fullwidth glyphs.
+        The SAME normalization is applied on ``add`` and on ``screen_order``.
+
+        NFKC does **not** fold cross-script homoglyphs (a Cyrillic ``А`` is not
+        Latin ``A``). Those are handled at the screening layer: a normalized
+        symbol with characters outside :data:`_ALLOWED_SYMBOL_CHARS` is surfaced
+        (FLAGGED), never CLEARED — see :meth:`screen_order`.
         """
         s = unicodedata.normalize("NFKC", symbol)
         s = s.translate(_ZERO_WIDTH)
         return "".join(s.split()).upper()
+
+    @staticmethod
+    def _is_well_formed(sym: str) -> bool:
+        return bool(sym) and all(c in _ALLOWED_SYMBOL_CHARS for c in sym)
 
     def add(self, symbol: str, list_type: ListType, reason: str) -> None:
         """Add a symbol to the restricted or watch list."""
         sym = self._norm(symbol)
         if not sym:
             raise ValueError("symbol must be non-empty")
+        if not self._is_well_formed(sym):
+            raise ValueError(
+                f"symbol {sym!r} contains non-standard characters after normalization "
+                "(possible homoglyph); list entries must be plain ASCII tickers"
+            )
         if list_type is ListType.RESTRICTED:
             self._restricted[sym] = reason
             self._watch.pop(sym, None)  # restricted supersedes watch
@@ -134,7 +154,9 @@ class MNPISurveillance:
         """Screen a proposed order against the information barrier.
 
         A restricted name is BLOCKED (a barrier breach is recorded); a watch-list
-        name is FLAGGED but permitted; anything else is CLEARED.
+        name is FLAGGED but permitted; a symbol with non-standard characters after
+        normalization (a possible cross-script homoglyph) is FLAGGED, never
+        CLEARED; anything else is CLEARED.
         """
         sym = self._norm(symbol)
         if sym in self._restricted:
@@ -160,6 +182,12 @@ class MNPISurveillance:
 
         if sym in self._watch:
             outcome, reason = ScreenOutcome.FLAGGED, f"watch list: {self._watch[sym]}"
+        elif not self._is_well_formed(sym):
+            outcome, reason = (
+                ScreenOutcome.FLAGGED,
+                "non-standard characters after normalization (possible homoglyph/"
+                "obfuscation) — surfaced for review, not cleared",
+            )
         else:
             outcome, reason = ScreenOutcome.CLEARED, "no MNPI restriction"
 

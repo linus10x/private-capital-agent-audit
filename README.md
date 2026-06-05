@@ -31,29 +31,37 @@ Built to the corrected Autonomy Ladder primitive standard (each ships with a
 committed adversarial probe under [`tests/adversarial/`](tests/adversarial/) that
 reproduces the exact failure the correction fixes):
 
-| Primitive | What it guarantees |
+| Primitive | What it enforces (in code) |
 |---|---|
 | **P1 — Autonomy Ladder level gate** (`AutonomyLadder`) | Refuses promotion when a required lower-rung control is unmet; requires **independent attestation** of its inputs (no caller-asserted booleans). Advisory mode is labeled advisory; production mode fails closed without a verifier. |
 | **P2 — Sovereign veto** (`SovereignVeto`) | A kill switch an agent **cannot clear for itself**; production-mode clears require an **authenticated, authorized non-agent principal** (an IdP/KMS seam), never a free-string `operator_id`. |
-| **P3 — Hash-chain ledger** (`AuditChain`) | A deployer-keyed genesis event makes a hardened chain **and** a legacy chain both verify; in-place tamper is detected on replay, and **end-to-end regeneration** is caught by a witness anchor that is non-optional in production mode. |
+| **P3 — Hash-chain ledger** (`AuditChain`) | A deployer-keyed genesis event makes a hardened chain **and** a legacy chain both verify; in-place tamper of any event **with a successor** is detected on replay, and regeneration **or** truncation below a witness checkpoint is caught by a witness anchor that is non-optional in production mode. The unwitnessed tail (events after the last anchor) shares the truncation residual — anchor to commit the head (`head_is_witnessed()`); see [`FAILURE-MODES.md`](FAILURE-MODES.md). |
 | **P4 — DEFCON state machine** (`DEFCONMachine`) | Escalates immediately on risk; **de-escalates only** through the authorized manual-override path, **one level at a time** — a single call cannot move `HALT → NORMAL`. |
 | **P5 — Effective-challenge harness** (`EffectiveChallengeHarness`) | Rejects self-challenge (`challenger == primary`); records an operator **independence attestation**. A model owner cannot self-validate to a clean `ACCEPT_PRIMARY`. |
 
 ## The seven adviser-native controls
 
-Each is a thin, real governance layer over the primitives, recorded to the audit
-chain, with a primary-sourced regulatory anchor (see
+Each is a thin governance layer over the primitives, recorded to the audit chain,
+with a primary-sourced regulatory anchor (see
 [`docs/regulatory/obligation_map.md`](docs/regulatory/obligation_map.md)):
 
 | Control | Anchor | What it does |
 |---|---|---|
 | **Best execution** (`BestExecutionGate`) | §206 duty of care (IA-5248) | Gates an order's release on a *systematic* best-execution review — qualitative factors evaluated, slippage within tolerance. |
 | **MNPI surveillance** (`MNPISurveillance`) | §204A; Exchange Act §10(b) / Rule 10b-5 | Restricted/watch lists + an information barrier; a restricted-name order is **blocked** and the breach recorded. |
-| **Custody rule** (`CustodyRuleCheck`) | 17 CFR 275.206(4)-2 | Assesses qualified-custodian, account-statement, and surprise-exam posture, including the pooled-vehicle audit exception (120-day window). |
-| **Marketing rule** (`MarketingReviewGate`) | 17 CFR 275.206(4)-1 | Gates distribution on reviewer-asserted attributes — hypothetical-performance policy present, testimonial disclosure, net-of-fees performance. |
+| **Custody rule** (`CustodyRuleCheck`) | 17 CFR 275.206(4)-2 | Assesses qualified-custodian, account-statement, and surprise-exam posture, including the pooled-vehicle audit exception (120-day window; 180 days for a fund of funds). |
+| **Marketing rule** (`MarketingReviewGate`) | 17 CFR 275.206(4)-1 | Gates distribution on reviewer-asserted attributes — the three hypothetical-performance conditions, testimonial disclosure, and gross-vs-net at equal prominence. |
 | **Allocation fairness** (`AllocationFairnessMonitor`) | §206(1),(2),(4) | Flags cherry-picking — disproportionate favorable fills to favored or proprietary accounts. |
 | **Books & records** (`BooksAndRecordsMonitor`) | 17 CFR 275.204-2 | Flags off-channel business communications on uncaptured channels, and retention exceptions against the 5-year / first-2-years-accessible rule. |
 | **Valuation governance** (`ValuationGovernanceCheck`) | §206; 275.206(4)-2 audit | Flags an adviser-set mark (Level-3 / adviser-marked / manual override) lacking an independent valuation attestation, and stale marks. |
+
+> **What these controls are.** Each control acts on **deployer-asserted,
+> structured inputs** (curated lists, execution factors, arrangement attributes,
+> ad attributes, fills, communications) and records and surfaces consequences. A
+> control **does not independently observe** your order flow, communications, or
+> books, and a flag is a review signal, not an adjudication. Wiring these in does
+> **not** make a firm compliant — the compliance function owns the judgment. See
+> [`LIMITATIONS.md`](LIMITATIONS.md).
 
 ## Sub-vertical obligation map
 
@@ -65,9 +73,16 @@ verified (the golden corpus separately mixes verified matters with explicitly
 | Sub-vertical | Obligations |
 |---|---|
 | **Buy-side / quant** | fiduciary duty · best execution · books-and-records · MNPI surveillance |
-| **PE / credit GP** | fiduciary duty · allocation fairness (§206) · custody rule |
-| **Private wealth / UHNW** | fiduciary duty · marketing rule · duty-of-care for advice |
+| **PE / credit GP** | fiduciary duty · allocation fairness (§206) · custody rule · MNPI surveillance |
+| **Private wealth / UHNW** | fiduciary duty · marketing rule · duty-of-care for advice † |
 | **Fund admin / valuation** | custody rule · independent valuation · books-and-records |
+
+† Duty-of-care for advice is a **judgment obligation**, not a structured-attribute
+gate — it has no dedicated automated control. The library names and maps it, and
+the autonomy-ladder gate + sovereign veto + audit chain provide the human-
+oversight substrate; the reasonable-basis determination is the deployer's. The
+map names obligations that controls cover **plus** judgment obligations the
+deployer owns.
 
 ```bash
 private-capital-audit obligations buy_side_quant

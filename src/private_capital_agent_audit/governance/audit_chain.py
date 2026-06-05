@@ -333,24 +333,46 @@ class AuditChain:
     # -- witness anchoring (regeneration resistance) ----------------------
 
     def anchor_to_witness(self) -> dict[str, Any]:
-        """Anchor the current head to the external witness; record the receipt.
+        """Append a ``WITNESS_ANCHOR`` event and anchor IT to the external witness.
 
-        The receipt is also appended to the chain as a ``WITNESS_ANCHOR`` event
-        so the receipt itself is hash-chained.
+        The anchor event is appended FIRST (committing the prior head in its
+        payload), then the anchor event's OWN ``(sequence, event_hash)`` is
+        recorded to the external witness. This is deliberate: it makes the
+        witnessed checkpoint the chain's *current tail*, so a rewrite-and-restamp
+        of the last event is caught by :meth:`verify_regeneration_resistant`
+        (the external checkpoint no longer matches). Anchoring the *pre-anchor*
+        head instead would leave the anchor event itself an unwitnessed,
+        forgeable tail. The residual is unchanged and irreducible: events
+        appended *after* this anchor are unwitnessed until the next anchor.
         """
         if self._witness is None:
             raise ValueError("no witness_register configured; cannot anchor")
         with self._lock:
-            head = self.chain_head()
-            sequence = len(self._store) - 1 if self._store else 0
-            receipt = self._witness.anchor(head, sequence, _now_iso())
-            self.append(
+            prior_head = self.chain_head()
+            anchor_event = self.append(
                 AuditEventType.WITNESS_ANCHOR,
                 AutonomyLevel.A0_INFORMATIONAL,
                 agent_id=GENESIS_AGENT_ID,
-                payload={"anchored_head": head, "anchored_sequence": sequence, "receipt": receipt},
+                payload={"anchored_prior_head": prior_head},
             )
-            return receipt
+            return self._witness.anchor(anchor_event.event_hash, anchor_event.sequence, _now_iso())
+
+    def head_is_witnessed(self) -> bool:
+        """True when the current chain head matches the most-recent witness checkpoint.
+
+        Use in production to confirm nothing has been appended since the last
+        anchor — i.e. the tail is committed externally and cannot be silently
+        rewritten or truncated. ``False`` means there are unwitnessed tail events;
+        call :meth:`anchor_to_witness` to commit them.
+        """
+        if self._witness is None:
+            raise ValueError("no witness_register configured")
+        with self._lock:
+            checkpoints = self._witness.checkpoints()
+            if not checkpoints or not self._store:
+                return False
+            seq, head = checkpoints[-1]
+            return seq == self._store[-1].sequence and head == self._store[-1].event_hash
 
     def verify_regeneration_resistant(self) -> bool:
         """Detect regeneration AND truncation-below-an-anchor via the witness.

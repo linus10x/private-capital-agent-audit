@@ -73,17 +73,35 @@ def test_full_regeneration_detected() -> None:
     assert regen.verify_regeneration_resistant() is False  # checkpoint head differs
 
 
-def test_tail_rewrite_and_restamp_at_anchor_detected() -> None:
-    chain, _ = _seed_chain(5)
+def test_tail_rewrite_and_restamp_of_witnessed_tail_detected() -> None:
+    """After anchoring, the witnessed checkpoint IS the tail (the anchor event).
+    Rewriting + re-stamping that tail passes internal verify() (no successor links
+    to it), but the external witness checkpoint no longer matches — caught."""
+    chain, _ = _seed_chain(3)
     chain.anchor_to_witness()
-    # Rewrite the anchored event and re-stamp its own hash so internal verify passes.
-    target = chain.events()[5]  # the event anchored (genesis=0, e0..e4 = 1..5)
-    object.__setattr__(target, "payload", {"i": 999})
-    object.__setattr__(target, "event_hash", target.compute_hash())
-    # Its successor (the witness-anchor event) now breaks the link, so verify fails;
-    # and the witness checkpoint no longer matches the rewritten head.
-    assert chain.verify() is False
-    assert chain.verify_regeneration_resistant() is False
+    assert chain.head_is_witnessed() is True
+    tail = chain.events()[-1]  # the WITNESS_ANCHOR event = the witnessed tail
+    object.__setattr__(tail, "payload", {"FORGED": True})
+    object.__setattr__(tail, "event_hash", tail.compute_hash())
+    assert chain.verify() is True  # internally consistent (restamped, no successor)
+    assert chain.verify_regeneration_resistant() is False  # witness catches it
+    assert chain.head_is_witnessed() is False
+
+
+def test_post_anchor_tail_rewrite_is_the_documented_residual() -> None:
+    """A NON-witnessed tail (an event appended after the last anchor) can be
+    rewritten undetected — the irreducible residual documented in FAILURE-MODES.
+    The mitigation is anchor cadence: head_is_witnessed() reveals the exposure."""
+    chain, _ = _seed_chain(3)
+    chain.anchor_to_witness()
+    chain.append(AuditEventType.AGENT_ACTION, AutonomyLevel.A2_DELEGATED, "a", {"i": 99})
+    assert chain.head_is_witnessed() is False  # exposure is visible
+    tail = chain.events()[-1]
+    object.__setattr__(tail, "payload", {"FORGED": True})
+    object.__setattr__(tail, "event_hash", tail.compute_hash())
+    # Residual: undetected internally AND by the (stale) witness checkpoint.
+    assert chain.verify() is True
+    assert chain.verify_regeneration_resistant() is True
 
 
 def test_sequence_reorder_detected() -> None:
@@ -156,6 +174,53 @@ def test_mnpi_whitespace_bypass_blocked() -> None:
     surv = MNPISurveillance()
     surv.add("AAPL", ListType.RESTRICTED, "holds MNPI")
     assert surv.screen_order("o3", "A APL").outcome is ScreenOutcome.BLOCKED  # NBSP
+
+
+def test_mnpi_cyrillic_homoglyph_flagged_not_cleared() -> None:
+    """NFKC does not fold a Cyrillic 'А' (U+0410) to Latin 'A'. The homoglyphed
+    symbol must NOT silently CLEAR — it is surfaced (FLAGGED) for review."""
+    surv = MNPISurveillance()
+    surv.add("AAPL", ListType.RESTRICTED, "holds MNPI")
+    homoglyph = "АAPL"  # leading Cyrillic А
+    result = surv.screen_order("o4", homoglyph)
+    assert result.outcome is ScreenOutcome.FLAGGED
+    assert "homoglyph" in result.reason
+
+
+def test_mnpi_add_rejects_homoglyph_list_entry() -> None:
+    surv = MNPISurveillance()
+    with pytest.raises(ValueError, match="homoglyph"):
+        surv.add("АAPL", ListType.RESTRICTED, "Cyrillic in a list entry")
+
+
+def test_best_ex_negative_fill_fails_closed() -> None:
+    from private_capital_agent_audit.governance.best_execution import (
+        BestExecutionGate,
+        ExecutionFactors,
+        Side,
+    )
+
+    gate = BestExecutionGate()
+    review = gate.review_order(
+        "ord-neg",
+        ExecutionFactors(
+            venue="v",
+            side=Side.BUY,
+            fill_price=-50.0,  # would otherwise compute as a huge favorable fill
+            benchmark_price=100.0,
+            commission=0.0,
+            factors_considered=("price", "venue_quality"),
+        ),
+    )
+    assert review.approved is False
+
+
+def test_valuation_negative_days_rejected() -> None:
+    check = ValuationGovernanceCheck()
+    with pytest.raises(ValueError, match="non-negative"):
+        check.assess(
+            ValuationInput("a", 1, PriceSource.INDEPENDENT, True, days_since_last_valuation=-5)
+        )
 
 
 # --- allocation single-group concentration ----------------------------------

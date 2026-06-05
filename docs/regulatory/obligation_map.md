@@ -6,8 +6,14 @@ U.S. Code via the Legal Information Institute)
 on **2026-06-05**. The machine-readable version is
 `private_capital_agent_audit.governance.obligation_map`.
 
-> Engineering reference, not legal advice. Confirm every obligation against the
-> primary source and qualified counsel before relying on it.
+> **Engineering reference, not legal or compliance advice.** This map names
+> obligations and cites primary sources for engineering use; it does not
+> determine which obligations apply to any particular adviser, or whether one is
+> met — that is a determination only the firm's compliance function and qualified
+> counsel can make. Confirm every obligation against the primary source before
+> relying on it. The enforcement matters below are public records cited to show
+> what conduct the controls would surface; quote the primary source for operative
+> figures (some sanctions were litigated, stayed, or settled at different amounts).
 
 ## Scope
 
@@ -28,7 +34,7 @@ other actor's standard of conduct.
 | Custody rule | 17 CFR 275.206(4)-2 | https://www.ecfr.gov/current/title-17/chapter-II/part-275/section-275.206(4)-2 |
 | Marketing rule | 17 CFR 275.206(4)-1 (compliance 2022-11-04) | https://www.ecfr.gov/current/title-17/chapter-II/part-275/section-275.206(4)-1 |
 | Duty of care for advice | §206 duty of care; IA-5248 (2019) | https://www.sec.gov/files/rules/interp/2019/ia-5248.pdf |
-| Independent valuation | §206; 17 CFR 275.206(4)-2 audit exception | https://www.ecfr.gov/current/title-17/chapter-II/part-275/section-275.206(4)-2 |
+| Independent valuation | §206 duty of loyalty (IA-5248); 17 CFR 275.206(4)-2 audit interaction | https://www.sec.gov/files/rules/interp/2019/ia-5248.pdf |
 
 ## Sub-vertical mapping
 
@@ -60,15 +66,19 @@ primary-source links in `tests/golden/corpus.py`):
 - **Marketing rule** (275.206(4)-1): *Titan Global Capital Management* (Release
   2023-153) — an early action under the amended Marketing Rule, on hypothetical
   performance.
-- **Custody rule** (275.206(4)-2): *Munakata Associates* (IA-6901-S) — a
-  surprise-examination failure.
-- **MNPI** (§204A): *Sound Point Capital Management* (Release 2024-106) — CLO
-  trading while holding creditors'-committee MNPI.
-- **Cherry-picking** (§206): *J.S. Oliver Capital Management* (Release 2013-168 /
-  IA-5368-S) and *Michael Breton / Strategic Capital Management* (Release
-  2017-32).
+- **Custody rule** (275.206(4)-2): *Munakata Associates* (IA-6901-S, order 2025)
+  — a surprise-examination failure; *Hi2 Investment Management* (IA-6691-S,
+  $75,000) — Custody Rule violated on 17 occasions.
+- **MNPI** (§204A): *Sound Point Capital Management* (Release 2024-106, $1.8M) —
+  CLO trading while holding creditors'-committee MNPI; *Marathon Asset
+  Management* (IA-6737, $1.5M) — creditors'-committee MNPI controls.
+- **Cherry-picking** (§206): *J.S. Oliver Capital Management / Ian O. Mausner*
+  (charged Release 2013-168; **settled May 2019, Release 33-10639, ~$669,965
+  disgorgement** — the earlier litigated sanctions were stayed and superseded;
+  quote the 2019 order for operative amounts) and *Michael Breton / Strategic
+  Capital Management* (Release 2017-32).
 
-A small number of additional matters are included and explicitly marked
-`UNVERIFIED` where a precise SEC release number or dollar figure could not be
-confirmed against a primary source this pass — they are honest placeholders, not
-relied-upon anchors.
+One marketing-rule matter (the September 2023 nine-adviser hypothetical-
+performance sweep) is included and explicitly marked `UNVERIFIED` — it names no
+individual firm and a precise aggregate release could not be confirmed against a
+primary source this pass; it is an honest placeholder, not a relied-upon anchor.

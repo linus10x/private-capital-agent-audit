@@ -13,6 +13,9 @@ execution within a deployer-set tolerance versus a benchmark. A review that
 considered no factors, or whose slippage exceeds tolerance, is NOT approved —
 and an unapproved order should be gated by the sovereign veto before it lands.
 
+Engineering reference, not legal/compliance advice — the deployer's compliance
+function owns the determination.
+
 Regulatory anchor (honest claim layer): best execution derives from the adviser
 fiduciary duty of care under **Advisers Act §206**, as articulated in SEC
 Release **IA-5248** (2019). It is not a numbered standalone rule. See
@@ -73,12 +76,14 @@ class ExecutionFactors:
         For a BUY, paying above benchmark is adverse; for a SELL, filling below
         benchmark is adverse. Returns ``inf`` (maximally adverse — never "in
         tolerance") when slippage cannot be assessed: a non-finite (NaN/inf)
-        fill or benchmark, or a non-positive benchmark. This fails closed —
-        ``0.0`` would let a degenerate input masquerade as a good fill.
+        fill or benchmark, or a non-positive benchmark or fill. This fails closed
+        — ``0.0`` would let a degenerate input masquerade as a good fill.
         """
         if not (math.isfinite(self.benchmark_price) and math.isfinite(self.fill_price)):
             return math.inf
-        if self.benchmark_price <= 0:
+        # A non-positive benchmark OR a non-positive fill is degenerate: a negative
+        # fill would otherwise compute as a hugely *favorable* slippage and clear.
+        if self.benchmark_price <= 0 or self.fill_price <= 0:
             return math.inf
         raw = (self.fill_price - self.benchmark_price) / self.benchmark_price
         signed = raw if self.side is Side.BUY else -raw
