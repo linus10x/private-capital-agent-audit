@@ -1,0 +1,120 @@
+[build-system]
+requires = ["setuptools>=70", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["private_capital_agent_audit*"]
+exclude = ["tests*", "scripts*", "docs*", "examples*"]
+
+[tool.setuptools.package-dir]
+"" = "src"
+
+[project]
+name = "private-capital-agent-audit"
+version = "0.1.0"
+description = "Governance patterns for autonomous AI agents at SEC-registered investment advisers (private capital)"
+readme = "README.md"
+license = { text = "MIT OR Apache-2.0" }
+authors = [
+    { name = "Kunjar Bhaduri", email = "130852583+linus10x@users.noreply.github.com" }
+]
+keywords = [
+    "ai-governance",
+    "autonomous-agents",
+    "private-capital",
+    "investment-adviser",
+    "advisers-act",
+    "fiduciary-duty",
+    "best-execution",
+    "custody-rule",
+    "marketing-rule",
+    "books-and-records",
+    "mnpi",
+    "regulated-ai",
+    "audit-trail",
+    "human-in-the-loop",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Financial and Insurance Industry",
+    "License :: OSI Approved :: MIT License",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Office/Business :: Financial",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Security",
+    "Typing :: Typed",
+]
+requires-python = ">=3.12"
+dependencies = []  # Zero runtime dependencies.
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.3",
+    "pytest-cov>=6.0",
+    "mypy>=1.14",
+    "ruff>=0.8",
+    "pre-commit>=3.7",
+]
+test-property = ["hypothesis>=6.115"]
+security-dev = [
+    "bandit[toml]>=1.7",
+    "pip-audit>=2.7",
+]
+
+[project.scripts]
+private-capital-audit = "private_capital_agent_audit.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/linus10x/private-capital-agent-audit"
+Repository = "https://github.com/linus10x/private-capital-agent-audit"
+Issues = "https://github.com/linus10x/private-capital-agent-audit/issues"
+Changelog = "https://github.com/linus10x/private-capital-agent-audit/blob/main/CHANGELOG.md"
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "N", "UP", "ANN", "B", "SIM"]
+ignore = ["ANN401"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["ANN"]
+"examples/*" = ["ANN"]
+"scripts/*" = ["ANN", "SIM", "N816"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+warn_return_any = true
+warn_unused_configs = true
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src", "."]
+addopts = "--tb=short -q"
+markers = [
+    "slow: long-running tests (e.g. hypothesis fuzz harnesses); skipped via `-m 'not slow'` for fast local iteration",
+    "golden: real-world golden-corpus fixtures sourced from public SEC enforcement actions",
+    "adversarial: AL-PROBE adversarial reproductions of the five primitive failure modes",
+]
+
+[tool.coverage.run]
+source = ["src/private_capital_agent_audit"]
+omit = ["tests/*"]
+
+[tool.coverage.report]
+fail_under = 90
+show_missing = true
+exclude_lines = [
+    "pragma: no cover",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+]

@@ -1,0 +1,58 @@
+cff-version: 1.2.0
+message: >-
+  If you use these patterns in your systems, research, or publications,
+  please cite this repository using the metadata below.
+type: software
+title: >-
+  private-capital-agent-audit: Governance Patterns for Autonomous AI
+  Agents at SEC-Registered Investment Advisers
+authors:
+  - family-names: Bhaduri
+    given-names: Kunjar
+    orcid: ""
+    affiliation: North Texas Capital Investments
+    website: "https://linkedin.com/in/kunjarbhaduri"
+repository-code: "https://github.com/linus10x/private-capital-agent-audit"
+url: "https://github.com/linus10x/private-capital-agent-audit"
+abstract: >-
+  Reference governance patterns for audit-ready autonomous AI agents at
+  SEC-registered investment advisers (private capital). Built to the
+  Investment Advisers Act fiduciary regime under §206 (duty of care +
+  duty of loyalty, per SEC Release IA-5248). Ships five corrected
+  Autonomy Ladder primitives — an A0–A4 level gate requiring independent
+  attestation, a sovereign veto that an agent cannot self-clear, a
+  deployer-keyed hash-chain ledger with witness-anchored regeneration
+  resistance, a DEFCON risk-state machine with a transition-direction
+  guard, and an effective-challenge harness that rejects self-validation
+  — each paired with a committed adversarial probe. Adds six
+  adviser-native controls: best execution (§206 duty of care), MNPI /
+  market-abuse surveillance (§204A; Exchange Act §10(b) / Rule 10b-5),
+  the custody rule (17 CFR 275.206(4)-2), the marketing rule (17 CFR
+  275.206(4)-1), cross-client allocation fairness / anti-cherry-picking
+  (§206), and books-and-records / off-channel-communications capture
+  (17 CFR 275.204-2). Includes a sub-vertical obligation map with
+  primary-source-verified citations and a golden corpus of real public
+  SEC enforcement actions wired as executable test fixtures. Zero runtime
+  dependencies; property-tested; mypy --strict clean. Patterns were
+  extracted from a multi-year private quantitative options research
+  program with Marcos López de Prado as named advisor on adjacent work;
+  the source program operates in paper-trading Phase 0 — no live capital
+  has been deployed.
+keywords:
+  - AI governance
+  - autonomous agents
+  - investment adviser
+  - Advisers Act
+  - fiduciary duty
+  - private capital
+  - regulated AI
+  - human-in-the-loop
+  - audit trail
+  - compliance
+license: "MIT OR Apache-2.0"
+version: "0.1.0"
+date-released: "2026-06-05"  # STAGED — owner confirms the actual date at tag time (owner gate)
+# DOI plan: this is a NEW repository with NO prior DOI. On the first public
+# Release, the GitHub–Zenodo webhook mints a version-specific DOI for v0.1.0 and
+# a concept DOI resolving to all versions. Add the concept DOI to this `doi:`
+# field after that Release. Do NOT mint a DOI or publish before the owner gate.
