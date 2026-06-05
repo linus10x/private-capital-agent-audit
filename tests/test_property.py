@@ -10,8 +10,8 @@ space, not a handful of happy-path checks:
 * challenger ≠ primary and the un-attested-independence escalation rule,
 * best-execution slippage sign, allocation-fairness symmetry.
 
-Each ``@given`` test runs ``max_examples`` cases; with ~16 properties at 300
-examples that is ~4,800 generated cases per full run (well into the thousands
+Each ``@given`` test runs ``max_examples`` cases; with 12 properties at 300
+examples that is ~3,600 generated cases per full run (well into the thousands
 the test strategy calls for). The count is stated here, not silently capped.
 """
 
