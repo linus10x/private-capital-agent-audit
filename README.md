@@ -138,13 +138,16 @@ The suite is layered, not a handful of happy-path checks (`pytest`):
 
 ## Install
 
+Install from the GitHub release (zero runtime dependencies):
+
 ```bash
-pip install private-capital-agent-audit            # runtime: zero dependencies
-pip install "private-capital-agent-audit[dev]"     # tests + lint + type-check
-pip install "private-capital-agent-audit[test-property]"  # hypothesis
+pip install "git+https://github.com/linus10x/private-capital-agent-audit@v0.1.0"
+# with the dev / property-test extras:
+pip install "private_capital_agent_audit[dev] @ git+https://github.com/linus10x/private-capital-agent-audit@v0.1.0"
 ```
 
-Requires Python 3.12+.
+Requires Python 3.12+. A PyPI distribution (`pip install private-capital-agent-audit`)
+is planned for a later release.
 
 ## Regulatory anchors (primary-sourced, verified 2026-06-05)
 
