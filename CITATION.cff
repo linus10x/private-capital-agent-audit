@@ -57,6 +57,6 @@ license:
   - Apache-2.0
 version: "0.1.1"
 date-released: "2026-06-06"
-# The concept DOI resolves to the latest version and is the preferred citeable
-# handle; each tagged release also mints its own version-specific DOI. A `doi:`
-# field is backfilled here once Zenodo archives the v0.1.1 release.
+# The concept DOI below resolves to the latest version and is the preferred
+# citeable handle; the v0.1.1 release has its own version DOI 10.5281/zenodo.20564497.
+doi: "10.5281/zenodo.20564496"

@@ -1,5 +1,7 @@
 # private-capital-agent-audit
 
+[![DOI](https://zenodo.org/badge/1260855848.svg)](https://doi.org/10.5281/zenodo.20564496)
+
 **Governance patterns for autonomous AI agents at SEC-registered investment advisers.**
 
 Reference IP for adoption — five corrected governance primitives plus seven
@@ -141,9 +143,9 @@ The suite is layered, not a handful of happy-path checks (`pytest`):
 Install from the GitHub release (zero runtime dependencies):
 
 ```bash
-pip install "git+https://github.com/linus10x/private-capital-agent-audit@v0.1.0"
+pip install "git+https://github.com/linus10x/private-capital-agent-audit@v0.1.1"
 # with the dev / property-test extras:
-pip install "private_capital_agent_audit[dev] @ git+https://github.com/linus10x/private-capital-agent-audit@v0.1.0"
+pip install "private_capital_agent_audit[dev] @ git+https://github.com/linus10x/private-capital-agent-audit@v0.1.1"
 ```
 
 Requires Python 3.12+. A PyPI distribution (`pip install private-capital-agent-audit`)
@@ -167,7 +169,8 @@ counsel before relying on it.
 
 Dual-licensed **MIT OR Apache-2.0** ([`LICENSE-MIT`](LICENSE-MIT) /
 [`LICENSE-APACHE`](LICENSE-APACHE)). If you use this work, please cite it — see
-[`CITATION.cff`](CITATION.cff). A Zenodo DOI is planned for the first public
-release.
+[`CITATION.cff`](CITATION.cff). Archived on Zenodo — concept DOI
+[10.5281/zenodo.20564496](https://doi.org/10.5281/zenodo.20564496) (resolves to
+the latest version).
 
 Author: Kunjar Bhaduri.
