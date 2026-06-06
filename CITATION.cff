@@ -36,8 +36,10 @@ abstract: >-
   SEC enforcement actions wired as executable test fixtures. Zero runtime
   dependencies; property-tested; mypy --strict clean. Patterns were
   extracted from a multi-year private quantitative options research
-  program operating in paper-trading Phase 0 — no live capital has been
-  deployed.
+  program (a separate program to which Marcos López de Prado is a named
+  advisor on adjacent work; he is not an advisor to, contributor to, or
+  endorser of this library) operating in paper-trading Phase 0 — no live
+  capital has been deployed.
 keywords:
   - AI governance
   - autonomous agents
@@ -51,8 +53,8 @@ keywords:
   - compliance
 license: "MIT OR Apache-2.0"
 version: "0.1.0"
-date-released: "2026-06-05"  # STAGED — owner confirms the actual date at tag time (owner gate)
-# DOI plan: this is a NEW repository with NO prior DOI. On the first public
-# Release, the GitHub–Zenodo webhook mints a version-specific DOI for v0.1.0 and
-# a concept DOI resolving to all versions. Add the concept DOI to this `doi:`
-# field after that Release. Do NOT mint a DOI or publish before the owner gate.
+date-released: "2026-06-05"
+# DOI: this is a NEW repository with NO prior DOI. The first public Release mints
+# a version-specific DOI for v0.1.0 and a concept DOI (resolving to all versions)
+# via the GitHub–Zenodo webhook. Add the concept DOI to a `doi:` field here once
+# Zenodo has archived the release.
