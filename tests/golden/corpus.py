@@ -98,11 +98,14 @@ MARKETING = (
         matter_id="marketing_nine_adviser_sweep_2023",
         name="Nine advisers — hypothetical-performance marketing-rule sweep",
         date="2023-09-11",
-        sec_release=None,  # aggregate press-release number not confirmed this pass
-        outcome="$850,000 combined civil penalties (per public reporting).",
+        sec_release="2023-173",
+        outcome=(
+            "$850,000 combined civil penalties; nine advisers charged for advertising "
+            "hypothetical performance without the required policies and procedures."
+        ),
         obligation_id="marketing_rule",
-        primary_source_url="https://www.sec.gov/litigation/admin",
-        verified=False,
+        primary_source_url="https://www.sec.gov/newsroom/press-releases/2023-173",
+        verified=True,
     ),
 )
 
@@ -132,7 +135,8 @@ CUSTODY = (
         sec_release="IA-6691-S",
         outcome=(
             "Cease-and-desist + censure + $75,000 penalty (neither admit nor deny). "
-            "Custody Rule violated on 17 occasions; also 206(4)/206(4)-7 compliance findings."
+            "Failed on 17 occasions to provide timely annual audited financial statements "
+            "to fund investors / otherwise comply with the custody rule; 206(4)-2 + 206(4)-7."
         ),
         obligation_id="custody_rule",
         primary_source_url=(

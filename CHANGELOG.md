@@ -7,9 +7,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ## [0.1.0] — 2026-06-05
 
 First public release: a standalone, DOI-publishable governance pattern library
-for autonomous AI agents at SEC-registered investment advisers. The
-buyer-facing regulatory content was reviewed and signed off by qualified
-securities counsel; all statutory/CFR citations are primary-source verified.
+for autonomous AI agents at SEC-registered investment advisers. All
+statutory/CFR citations are primary-source verified.
 
 ### Added
 

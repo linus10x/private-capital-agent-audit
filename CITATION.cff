@@ -36,10 +36,8 @@ abstract: >-
   SEC enforcement actions wired as executable test fixtures. Zero runtime
   dependencies; property-tested; mypy --strict clean. Patterns were
   extracted from a multi-year private quantitative options research
-  program (a separate program to which Marcos López de Prado is a named
-  advisor on adjacent work; he is not an advisor to, contributor to, or
-  endorser of this library) operating in paper-trading Phase 0 — no live
-  capital has been deployed.
+  program operating in paper-trading Phase 0 — no live capital has been
+  deployed.
 keywords:
   - AI governance
   - autonomous agents

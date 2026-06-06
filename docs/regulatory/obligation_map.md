@@ -79,7 +79,7 @@ primary-source links in `tests/golden/corpus.py`):
   quote the 2019 order for operative amounts) and *Michael Breton / Strategic
   Capital Management* (Release 2017-32).
 
-One marketing-rule matter (the September 2023 nine-adviser hypothetical-
-performance sweep) is included and explicitly marked `UNVERIFIED` — it names no
-individual firm and a precise aggregate release could not be confirmed against a
-primary source this pass; it is an honest placeholder, not a relied-upon anchor.
+The September 2023 nine-adviser hypothetical-performance sweep (Release 2023-173,
+$850,000 combined) is also included; it names no individual firm. Every corpus
+matter is primary-source-verified; any entry that cannot be confirmed against a
+primary source is marked `UNVERIFIED` in `tests/golden/corpus.py`.
