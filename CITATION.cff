@@ -49,10 +49,14 @@ keywords:
   - human-in-the-loop
   - audit trail
   - compliance
-license: "MIT OR Apache-2.0"
-version: "0.1.0"
-date-released: "2026-06-05"
-# DOI: this is a NEW repository with NO prior DOI. The first public Release mints
-# a version-specific DOI for v0.1.0 and a concept DOI (resolving to all versions)
-# via the GitHub–Zenodo webhook. Add the concept DOI to a `doi:` field here once
-# Zenodo has archived the release.
+# CFF license is a list (Zenodo's CFF parser rejects the "MIT OR Apache-2.0"
+# SPDX-expression string). The repo is dual-licensed MIT OR Apache-2.0 at the
+# user's option — see LICENSE / LICENSE-MIT / LICENSE-APACHE.
+license:
+  - MIT
+  - Apache-2.0
+version: "0.1.1"
+date-released: "2026-06-06"
+# The concept DOI resolves to the latest version and is the preferred citeable
+# handle; each tagged release also mints its own version-specific DOI. A `doi:`
+# field is backfilled here once Zenodo archives the v0.1.1 release.

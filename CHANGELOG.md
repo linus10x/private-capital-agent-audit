@@ -4,6 +4,20 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project adheres
 to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.1] — 2026-06-06
+
+Zenodo-archived release (DOI). No API changes.
+
+### Changed
+
+- Independent primary-source fact-check of the public surface: all statutory/CFR
+  citations confirmed; every named-party enforcement matter in the golden corpus
+  verified against its SEC primary source. The September 2023 nine-adviser
+  marketing-rule sweep is now anchored to its confirmed release (PR 2023-173);
+  the Hi2 custody finding was tightened to the order's exact language.
+- Added `.zenodo.json` (native Zenodo deposit metadata) and a CFF-list `license`
+  so Zenodo archives the release with correct metadata.
+
 ## [0.1.0] — 2026-06-05
 
 First public release: a standalone, DOI-publishable governance pattern library

@@ -1,0 +1,27 @@
+{
+  "upload_type": "software",
+  "title": "private-capital-agent-audit: Governance patterns for autonomous AI agents at SEC-registered investment advisers",
+  "version": "0.1.1",
+  "access_right": "open",
+  "license": "MIT",
+  "creators": [
+    {
+      "name": "Bhaduri, Kunjar",
+      "affiliation": "North Texas Capital Investments"
+    }
+  ],
+  "keywords": [
+    "ai-governance",
+    "autonomous-agents",
+    "investment-adviser",
+    "advisers-act",
+    "fiduciary-duty",
+    "private-capital",
+    "best-execution",
+    "custody-rule",
+    "marketing-rule",
+    "mnpi",
+    "audit-trail"
+  ],
+  "description": "Reference governance patterns for audit-ready autonomous AI agents at SEC-registered investment advisers (private capital), built to the Investment Advisers Act fiduciary regime under Section 206 (duty of care and duty of loyalty, per SEC Release IA-5248). Ships five corrected-spec Autonomy Ladder primitives (a level gate requiring independent attestation, an un-self-clearable sovereign veto with a mandatory production-mode authorizer, a deployer-keyed hash-chain ledger with a genesis-branching verifier and a non-optional production-mode external witness for regeneration and truncation resistance, a DEFCON state machine with a transition-direction guard, and an effective-challenge harness enforcing challenger-not-equal-primary with an attested independence record), each paired with a committed adversarial probe. Adds seven adviser-native controls: best execution (Section 206 duty of care), MNPI / market-abuse surveillance (Section 204A; Exchange Act Section 10(b) and Rule 10b-5), the custody rule (17 CFR 275.206(4)-2), the marketing rule (17 CFR 275.206(4)-1), cross-client allocation fairness / anti-cherry-picking (Section 206), books-and-records / off-channel-communications capture (17 CFR 275.204-2), and independent-valuation governance (Section 206 duty of loyalty). Includes a sub-vertical obligation map with primary-source-verified citations and a golden corpus of real public SEC enforcement actions wired as executable test fixtures. The library models the investment-adviser fiduciary regime only; it does not encode any broker-dealer standard of conduct. Reference IP for adoption, not a deployed control, and not legal advice. Dual-licensed MIT OR Apache-2.0. Independent research; no employer or client intellectual property or confidential material. Zero runtime dependencies."
+}
