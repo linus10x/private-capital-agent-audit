@@ -4,6 +4,10 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project adheres
 to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.3] — 2026-06-09
+
+Frontier-autonomy README section + 'for reviewers & safety teams' note; links the framework and the non-financial agent-coordination demo. No source changes.
+
 ## [0.1.2] — 2026-06-09
 
 Documentation release: README upgraded to the conversion standard (buyer hook, CI/coverage/license badges, real-enforcement proof section); reconciled __init__ version. No source/API changes.
