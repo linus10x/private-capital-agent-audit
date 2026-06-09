@@ -1,26 +1,62 @@
 # private-capital-agent-audit
 
+**The Advisers Act §206 control layer that makes an AI agent's orders, marketing, and valuation marks auditable.**
+
 [![CI](https://github.com/linus10x/private-capital-agent-audit/actions/workflows/ci.yml/badge.svg)](https://github.com/linus10x/private-capital-agent-audit/actions/workflows/ci.yml)
 [![coverage](https://img.shields.io/badge/coverage-98.7%25-brightgreen)](#proof-on-real-enforcement)
+[![tests](https://img.shields.io/badge/tests-181%20passing-brightgreen)](#test-strategy)
 [![license](https://img.shields.io/badge/license-MIT%20OR%20Apache--2.0-blue)](LICENSE-MIT)
 [![python](https://img.shields.io/badge/python-3.12%2B-blue)](pyproject.toml)
 [![DOI](https://zenodo.org/badge/1260855848.svg)](https://doi.org/10.5281/zenodo.20564496)
-
-**If your firm is letting an AI agent place orders, send marketing, or mark
-positions, here is the Advisers Act §206 control layer that makes those actions
-auditable.** Five corrected governance primitives plus seven adviser-native
-controls, built to the Investment Advisers Act fiduciary regime — every flag
-recorded to a tamper-evident ledger, every regulatory anchor primary-sourced, and
-every control behaviorally tested against a corpus of real SEC enforcement matters.
-
-`181 tests · 98.7% coverage (≥90% gate) · 18/18 mutation kill · golden corpus of 12 real SEC enforcement matters · zero runtime deps · mypy --strict`
+[![Autonomy Ladder family](https://img.shields.io/badge/Autonomy%20Ladder-family-1f3a5f)](https://github.com/linus10x/autonomy-ladder-libraries)
 
 > **Claim layer (read first).** This is *reference IP for adoption*, not a control
 > operating in production at any firm. The five primitives are real, tested
 > reference patterns; the seven adviser controls are implemented and tested
 > reference controls. Nothing here is a deployed system, legal advice, or a
-> substitute for qualified counsel and a qualified compliance function. See
+> substitute for qualified counsel and a qualified compliance function.
+>
+> **What this is:** the §206 control layer that makes an AI agent's orders,
+> marketing, and valuation marks auditable — five corrected governance primitives
+> plus seven adviser-native controls, every flag recorded to a tamper-evident
+> ledger, every regulatory anchor primary-sourced.
+> **What this is not:** a deployed compliance system, legal advice, or a
+> substitute for counsel and a compliance function. See
 > [`LIMITATIONS.md`](LIMITATIONS.md) and [`FAILURE-MODES.md`](FAILURE-MODES.md).
+> **Who this is for:** an RIA / allocator compliance lead, or a buy-side-AI lead,
+> wiring governance under an autonomous agent that places orders, sends marketing,
+> or marks positions.
+
+## 30-second tour
+
+If your firm is letting an AI agent place orders, send marketing, or mark
+positions, this is the **Advisers Act §206 control layer** that makes those
+actions auditable. The consequential write an adviser's autonomous agent makes
+is an **order, an allocation, or an outbound communication** — and each one is
+governed here by a control with a primary-sourced anchor, recorded to a
+tamper-evident ledger, demotable on breach.
+
+`181 tests · 98.7% coverage (≥90% gate) · 18/18 mutation kill · golden corpus of 12 real SEC enforcement matters · zero runtime deps · mypy --strict`
+
+- **5 corrected primitives** — level gate · sovereign veto · hash-chain ledger · DEFCON · effective-challenge harness.
+- **7 adviser-native controls** — best execution · MNPI surveillance · custody rule · marketing rule · allocation fairness · books-and-records · valuation governance.
+- **Proven on real enforcement** — each control catches the exact conduct a public SEC matter penalized (see [Proof on real enforcement](#proof-on-real-enforcement)).
+- **Part of the [Autonomy Ladder™ family](#part-of-the-autonomy-ladder-family)** — one A0→A4 governance model across six regulated verticals.
+
+## Read me first
+
+1. **See a control fire** — run the golden-corpus suite (`pytest tests/golden/ -v`),
+   where each control is fed the failing construction a real SEC matter describes
+   and must flag it; or any control test under [`tests/`](tests/).
+2. **Walk one control end to end** — [`WORKED_EXAMPLE.md`](WORKED_EXAMPLE.md)
+   takes the allocation-fairness (anti-cherry-picking) control through the J.S.
+   Oliver enforcement shape: the decision class, the agent acting, the envelope
+   catching the out-of-envelope case, the audit entry, and the demotion. The
+   script ([`examples/worked_example_allocation_fairness.py`](examples/worked_example_allocation_fairness.py))
+   runs end to end.
+3. **Understand the framework** — [autonomy-ladder.io](https://autonomy-ladder.io)
+   for the A0→A4 model, and [`AUTONOMY_LADDER.md`](AUTONOMY_LADDER.md) for how the
+   five primitives and seven controls map to the rungs.
 
 ## Why this exists for frontier autonomy stacks
 
@@ -36,8 +72,9 @@ The controls in this library are **domain-agnostic**. The DEFCON state machine, 
 
 Six co-equal regulated-vertical reference libraries implementing the **Autonomy
 Ladder** — a governance framework for autonomous AI in regulated operations
-(A0→A4, every rung demotable). **Framework + whitepaper:
-[autonomy-ladder.io](https://autonomy-ladder.io).**
+(A0→A4, every rung demotable). **Family index:
+[autonomy-ladder-libraries](https://github.com/linus10x/autonomy-ladder-libraries) ·
+framework + whitepaper: [autonomy-ladder.io](https://autonomy-ladder.io).**
 
 | Vertical | Library |
 |---|---|
@@ -205,9 +242,9 @@ coverage** (CI gate at `--cov-fail-under=90`) (`pytest`):
 Install from the GitHub release (zero runtime dependencies):
 
 ```bash
-pip install "git+https://github.com/linus10x/private-capital-agent-audit@v0.1.1"
+pip install "git+https://github.com/linus10x/private-capital-agent-audit@v0.1.3"
 # with the dev / property-test extras:
-pip install "private_capital_agent_audit[dev,test-property] @ git+https://github.com/linus10x/private-capital-agent-audit@v0.1.1"
+pip install "private_capital_agent_audit[dev,test-property] @ git+https://github.com/linus10x/private-capital-agent-audit@v0.1.3"
 ```
 
 Requires Python 3.12+. A PyPI distribution (`pip install private-capital-agent-audit`)
@@ -236,3 +273,17 @@ Dual-licensed **MIT OR Apache-2.0** ([`LICENSE-MIT`](LICENSE-MIT) /
 the latest version).
 
 Author: Kunjar Bhaduri.
+
+## The Autonomy Ladder™ family
+
+Part of a family of regulated-vertical reference libraries implementing one
+A0→A4 governance model. Family index:
+[**autonomy-ladder-libraries**](https://github.com/linus10x/autonomy-ladder-libraries) ·
+framework + whitepaper: [**autonomy-ladder.io**](https://autonomy-ladder.io).
+
+- [`finserv-agent-audit`](https://github.com/linus10x/finserv-agent-audit) — cross-vertical financial services
+- [`banking-agent-audit`](https://github.com/linus10x/banking-agent-audit) — banking (model risk · ECOA/Reg B · BSA/AML/OFAC)
+- [`payments-agent-audit`](https://github.com/linus10x/payments-agent-audit) — payments (OFAC · Reg E · rail finality)
+- [`payer-agent-audit`](https://github.com/linus10x/payer-agent-audit) — health-insurance payer (UM · prior auth · appeals)
+- **`private-capital-agent-audit`** — SEC-registered investment advisers (Advisers Act §206) — *this repo*
+- [`cre-agent-audit`](https://github.com/linus10x/cre-agent-audit) — commercial real estate

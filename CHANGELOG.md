@@ -4,6 +4,29 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project adheres
 to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+Repository-uplift documentation pass (no source/API changes):
+
+- **README top locked to the family template** — one-line description under the
+  title; badge row extended with **Tests** and **Autonomy Ladder family**
+  (→ meta-repo) badges; claim-layer blockquote restated as What this is / What
+  this is not / Who this is for; added a **30-second tour** and a **Read me
+  first** section (golden-corpus test → `WORKED_EXAMPLE.md` →
+  autonomy-ladder.io). Install pinned to `v0.1.3`. Sibling list added at the
+  bottom; family sections cross-reference the
+  [autonomy-ladder-libraries](https://github.com/linus10x/autonomy-ladder-libraries)
+  meta-repo.
+- **`WORKED_EXAMPLE.md` + runnable script** — `examples/worked_example_allocation_fairness.py`
+  walks the allocation-fairness (§206 anti-cherry-picking) control end to end
+  against the J.S. Oliver enforcement shape: decision class → agent acting →
+  envelope catch → audit entry → veto/DEFCON demotion. Runs on the public API;
+  verbatim output pasted into the doc.
+- **`AUTONOMY_LADDER.md`** — maps the five primitives and seven adviser controls
+  (best_execution, mnpi_surveillance, custody_rule, marketing_rule,
+  allocation_fairness, books_and_records, valuation_governance) onto the A0→A4
+  rungs, with the demotion mechanism and a cross-reference to autonomy-ladder.io.
+
 ## [0.1.3] — 2026-06-09
 
 Frontier-autonomy README section + 'for reviewers & safety teams' note; links the framework and the non-financial agent-coordination demo. No source changes.
