@@ -1,7 +1,7 @@
 {
   "upload_type": "software",
   "title": "private-capital-agent-audit: Governance patterns for autonomous AI agents at SEC-registered investment advisers",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "access_right": "open",
   "license": "MIT",
   "creators": [
