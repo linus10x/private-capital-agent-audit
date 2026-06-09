@@ -500,7 +500,9 @@ def test_cli_version(capsys) -> None:
     from private_capital_agent_audit.cli import main
 
     assert main(["version"]) == 0
-    assert "0.1.0" in capsys.readouterr().out
+    from private_capital_agent_audit import __version__
+
+    assert __version__ in capsys.readouterr().out
 
 
 def test_cli_obligations_all(capsys) -> None:
