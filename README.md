@@ -1,13 +1,19 @@
 # private-capital-agent-audit
 
+[![CI](https://github.com/linus10x/private-capital-agent-audit/actions/workflows/ci.yml/badge.svg)](https://github.com/linus10x/private-capital-agent-audit/actions/workflows/ci.yml)
+[![coverage](https://img.shields.io/badge/coverage-98.7%25-brightgreen)](#proof-on-real-enforcement)
+[![license](https://img.shields.io/badge/license-MIT%20OR%20Apache--2.0-blue)](LICENSE-MIT)
+[![python](https://img.shields.io/badge/python-3.12%2B-blue)](pyproject.toml)
 [![DOI](https://zenodo.org/badge/1260855848.svg)](https://doi.org/10.5281/zenodo.20564496)
 
-**Governance patterns for autonomous AI agents at SEC-registered investment advisers.**
+**If your firm is letting an AI agent place orders, send marketing, or mark
+positions, here is the Advisers Act §206 control layer that makes those actions
+auditable.** Five corrected governance primitives plus seven adviser-native
+controls, built to the Investment Advisers Act fiduciary regime — every flag
+recorded to a tamper-evident ledger, every regulatory anchor primary-sourced, and
+every control behaviorally tested against a corpus of real SEC enforcement matters.
 
-Reference IP for adoption — five corrected governance primitives plus seven
-adviser-native controls, built to the Investment Advisers Act fiduciary regime
-(§206). Zero runtime dependencies, `mypy --strict` clean, property-tested, with a
-golden corpus of real SEC enforcement actions wired as executable fixtures.
+`181 tests · 98.7% coverage (≥90% gate) · 18/18 mutation kill · golden corpus of 12 real SEC enforcement matters · zero runtime deps · mypy --strict`
 
 > **Claim layer (read first).** This is *reference IP for adoption*, not a control
 > operating in production at any firm. The five primitives are real, tested
@@ -15,6 +21,22 @@ golden corpus of real SEC enforcement actions wired as executable fixtures.
 > reference controls. Nothing here is a deployed system, legal advice, or a
 > substitute for qualified counsel and a qualified compliance function. See
 > [`LIMITATIONS.md`](LIMITATIONS.md) and [`FAILURE-MODES.md`](FAILURE-MODES.md).
+
+## Part of the Autonomy Ladder™ family
+
+Six co-equal regulated-vertical reference libraries implementing the **Autonomy
+Ladder** — a governance framework for autonomous AI in regulated operations
+(A0→A4, every rung demotable). **Framework + whitepaper:
+[autonomy-ladder.io](https://autonomy-ladder.io).**
+
+| Vertical | Library |
+|---|---|
+| Cross-vertical financial services | [`finserv-agent-audit`](https://github.com/linus10x/finserv-agent-audit) |
+| Banking (model risk · ECOA/Reg B · BSA/AML/OFAC) | [`banking-agent-audit`](https://github.com/linus10x/banking-agent-audit) |
+| Payments (OFAC · Reg E · rail finality) | [`payments-agent-audit`](https://github.com/linus10x/payments-agent-audit) |
+| Health-insurance payer (UM · prior auth · appeals) | [`payer-agent-audit`](https://github.com/linus10x/payer-agent-audit) |
+| SEC-registered investment advisers (Advisers Act §206) | **[`private-capital-agent-audit`](https://github.com/linus10x/private-capital-agent-audit)** |
+| Commercial real estate | [`cre-agent-audit`](https://github.com/linus10x/cre-agent-audit) |
 
 ## Scope: investment advisers, not intermediaries
 
@@ -29,9 +51,10 @@ Advisers Act and its rules.
 
 ## The five corrected primitives
 
-Built to the corrected Autonomy Ladder primitive standard (each ships with a
-committed adversarial probe under [`tests/adversarial/`](tests/adversarial/) that
-reproduces the exact failure the correction fixes):
+Built to the corrected Autonomy Ladder primitive standard — **"corrected" means
+each primitive was re-derived to close the specific failure its committed
+adversarial probe reproduces** (the probes live under
+[`tests/adversarial/`](tests/adversarial/)):
 
 | Primitive | What it enforces (in code) |
 |---|---|
@@ -69,8 +92,7 @@ with a primary-sourced regulatory anchor (see
 
 The buyer-facing regulatory-accuracy surface (`obligation_map`), grouped by
 private-capital sub-vertical. Every obligation-map citation is primary-source
-verified (the golden corpus separately mixes verified matters with explicitly
-`UNVERIFIED`-flagged placeholders):
+verified.
 
 | Sub-vertical | Obligations |
 |---|---|
@@ -88,6 +110,40 @@ deployer owns.
 
 ```bash
 private-capital-audit obligations buy_side_quant
+```
+
+## Proof on real enforcement
+
+The credibility tier. The golden corpus
+([`tests/golden/`](tests/golden/)) holds **12 real, public SEC enforcement
+matters** — and for each enforcement theme, the relevant control is fed the
+failing construction the matter describes and **must flag it**. The library does
+not merely cite the law; it catches the exact conduct the SEC penalized.
+
+| Theme | Matters in the corpus |
+|---|---|
+| **Cherry-picking / allocation fairness** | **J.S. Oliver Capital Management / Ian O. Mausner** — settled May 16, 2019 (Release 33-10639), ~$669,965 disgorgement (the operative settled figure; the stayed 2016 litigated figures are *not* quoted); Breton / Strategic Capital Management (2017). |
+| **MNPI controls (§204A)** | **Sound Point Capital Management** (PR 2024-106, $1.8M) — the SEC found **no evidence of trading on MNPI**; the charge was the §204A controls failure on CLO/creditor-committee information; Marathon Asset Management (2024). |
+| **Off-channel recordkeeping (275.204-2)** | The **$1.1B+ off-channel-communications wave** (PR 2022-174, firms admitted facts) plus the 2024 follow-on waves. |
+| **Marketing rule (275.206(4)-1)** | **Titan Global Capital Management** (PR 2023-153) — hypothetical-performance without the required policies; plus the nine-adviser sweep (2023). |
+| **Custody rule (275.206(4)-2)** | Surprise-exam / audited-statement failures (Munakata, Hi2). |
+
+All 12 matters are currently primary-source verified; the schema supports an
+`UNVERIFIED` flag for future additions, but the shipped corpus contains no
+unverified entries.
+
+Each matter is a parametrized fixture that asserts both the obligation mapping
+and the behavioral catch:
+
+```console
+$ pytest tests/golden/ -v
+tests/golden/test_golden_corpus.py::test_matter_maps_to_known_obligation[offchannel_2022_174] PASSED
+tests/golden/test_golden_corpus.py::test_matter_maps_to_known_obligation[marketing_titan_2023_153] PASSED
+tests/golden/test_golden_corpus.py::test_matter_maps_to_known_obligation[mnpi_soundpoint_2024_106] PASSED
+tests/golden/test_golden_corpus.py::test_matter_maps_to_known_obligation[alloc_js_oliver_2013_168] PASSED
+...
+tests/golden/test_golden_corpus.py::test_corpus_has_each_theme PASSED
+19 passed
 ```
 
 ## Quickstart
@@ -119,24 +175,20 @@ assert chain.verify()  # the ledger is internally consistent
 
 ## Test strategy
 
-The suite is layered, not a handful of happy-path checks (`pytest`):
+The suite is layered, not a handful of happy-path checks — **181 tests, 98.7%
+coverage** (CI gate at `--cov-fail-under=90`) (`pytest`):
 
 - **Unit + contract** for every primitive, control, and obligation-map entry.
 - **Property-based** (`hypothesis`) — thousands of generated cases across ledger
   invariants, level-gate monotonicity, veto un-self-clearability, DEFCON
   transition algebra, challenger independence, slippage sign, and allocation
   symmetry.
-- **The five AL-PROBES** ([`tests/adversarial/`](tests/adversarial/)) reproduce
-  the corrected-primitive failure modes and assert each is handled.
-- **A golden corpus** ([`tests/golden/`](tests/golden/)) of real, public SEC
-  enforcement actions — the off-channel-communications recordkeeping wave, a
-  Marketing Rule hypothetical-performance action, custody surprise-exam failures,
-  an MNPI-controls matter, and cherry-picking cases — each turned into a fixture
-  asserting the control would have flagged the conduct. Every fixture carries a
-  primary-source URL or is marked `UNVERIFIED`.
+- **Eight AL-PROBES** ([`tests/adversarial/`](tests/adversarial/)) reproduce the
+  corrected-primitive failure modes and assert each is handled.
+- **A golden corpus** ([`tests/golden/`](tests/golden/)) of 12 real, public SEC
+  enforcement matters — see [Proof on real enforcement](#proof-on-real-enforcement).
 - **Mutation** (`scripts/mutation_check.py`) over the load-bearing predicates;
-  every targeted mutant is killed.
-- **Coverage gate in CI** at `--cov-fail-under=90` (a floor, not a ceiling).
+  every targeted mutant is killed (**18/18, 100%**).
 
 ## Install
 
@@ -145,7 +197,7 @@ Install from the GitHub release (zero runtime dependencies):
 ```bash
 pip install "git+https://github.com/linus10x/private-capital-agent-audit@v0.1.1"
 # with the dev / property-test extras:
-pip install "private_capital_agent_audit[dev] @ git+https://github.com/linus10x/private-capital-agent-audit@v0.1.1"
+pip install "private_capital_agent_audit[dev,test-property] @ git+https://github.com/linus10x/private-capital-agent-audit@v0.1.1"
 ```
 
 Requires Python 3.12+. A PyPI distribution (`pip install private-capital-agent-audit`)
