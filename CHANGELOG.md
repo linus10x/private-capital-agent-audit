@@ -27,6 +27,10 @@ Repository-uplift documentation pass (no source/API changes):
   allocation_fairness, books_and_records, valuation_governance) onto the A0→A4
   rungs, with the demotion mechanism and a cross-reference to autonomy-ladder.io.
 
+## [0.1.4] — 2026-06-27
+
+First distribution to PyPI via Trusted Publishing (packaging/release only, no code changes).
+
 ## [0.1.3] — 2026-06-09
 
 Frontier-autonomy README section + 'for reviewers & safety teams' note; links the framework and the non-financial agent-coordination demo. No source changes.
