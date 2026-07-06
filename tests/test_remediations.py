@@ -1,6 +1,6 @@
 """Regression tests for the adversarial-review remediations.
 
-Each test pins a defect the beat-the-shit / JPMC-audit pass surfaced, so it
+Each test pins a defect an adversarial hardening-audit pass surfaced, so it
 cannot silently return: chain tail-truncation / torn-load resistance, the
 Unicode MNPI bypass, NaN/inf fail-opens, allocation single-group concentration,
 the PE↔MNPI obligation mapping, and the valuation-governance control.
