@@ -40,7 +40,7 @@ tamper-evident ledger, demotable on breach.
 
 - **5 corrected primitives** — level gate · sovereign veto · hash-chain ledger · DEFCON · effective-challenge harness.
 - **7 adviser-native controls** — best execution · MNPI surveillance · custody rule · marketing rule · allocation fairness · books-and-records · valuation governance.
-- **Proven on real enforcement** — each control catches the exact conduct a public SEC matter penalized (see [Proof on real enforcement](#proof-on-real-enforcement)).
+- **Tested against real enforcement** — each control is fed the failing conduct a public SEC matter describes and must flag it (see [Proof on real enforcement](#proof-on-real-enforcement)).
 - **Part of the [Autonomy Ladder™ family](#part-of-the-autonomy-ladder-family)** — one A0→A4 governance model across six regulated verticals.
 
 ## Read me first
@@ -60,7 +60,7 @@ tamper-evident ledger, demotable on breach.
 
 ## Why this exists for frontier autonomy stacks
 
-The controls in this library are **domain-agnostic**. The DEFCON state machine, the non-overridable **sovereign veto** (a separate-process control the agent cannot switch off), the **hash-chain audit ledger** (it detects tampering within its trust boundary), the **hard envelopes with mechanical escalation**, the **sampled-review tripwires**, and **monitor-led promotion** were forged in real multi-agent production systems under consequence — and they apply directly to any high-stakes coordinated autonomy (vehicles, robots, agent swarms) where *invisible promotion* or *cascade failure* is unacceptable. The decision class is a parameter: this repo encodes it for **SEC-registered investment advisers (Advisers Act §206)**, but the same A0→A4 deployment-authority structure lifts into any decision class without inheriting financial-services assumptions.
+The controls in this library are **domain-agnostic**. The DEFCON state machine, the non-overridable **sovereign veto** (a separate-process control the agent cannot switch off), the **hash-chain audit ledger** (it detects tampering within its trust boundary), the **hard envelopes with mechanical escalation**, the **sampled-review tripwires**, and **monitor-led promotion** were developed in my own multi-agent research systems — and they apply directly to any high-stakes coordinated autonomy (vehicles, robots, agent swarms) where *invisible promotion* or *cascade failure* is unacceptable. The decision class is a parameter: this repo encodes it for **SEC-registered investment advisers (Advisers Act §206)**, but the same A0→A4 deployment-authority structure lifts into any decision class without inheriting financial-services assumptions.
 
 - **Framework + whitepaper:** [autonomy-ladder.io](https://autonomy-ladder.io)
 - **Non-financial demo (under 60s):** [`finserv-agent-audit/examples/agent_coordination`](https://github.com/linus10x/finserv-agent-audit/tree/main/examples/agent_coordination) — the same veto / envelope / audit-chain / demotion primitives on a generic agent swarm.
@@ -165,7 +165,8 @@ The credibility tier. The golden corpus
 ([`tests/golden/`](tests/golden/)) holds **12 real, public SEC enforcement
 matters** — and for each enforcement theme, the relevant control is fed the
 failing construction the matter describes and **must flag it**. The library does
-not merely cite the law; it catches the exact conduct the SEC penalized.
+not merely cite the law; its tests check that each control flags the conduct
+the matter describes.
 
 | Theme | Matters in the corpus |
 |---|---|
