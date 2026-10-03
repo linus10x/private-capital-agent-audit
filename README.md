@@ -242,9 +242,9 @@ coverage** (CI gate at `--cov-fail-under=90`) (`pytest`):
 Install from the GitHub release (zero runtime dependencies):
 
 ```bash
-pip install "git+https://github.com/linus10x/private-capital-agent-audit@v0.1.3"
+pip install "git+https://github.com/linus10x/private-capital-agent-audit@v0.1.4"
 # with the dev / property-test extras:
-pip install "private_capital_agent_audit[dev,test-property] @ git+https://github.com/linus10x/private-capital-agent-audit@v0.1.3"
+pip install "private_capital_agent_audit[dev,test-property] @ git+https://github.com/linus10x/private-capital-agent-audit@v0.1.4"
 ```
 
 Requires Python 3.12+. A PyPI distribution (`pip install private-capital-agent-audit`)
