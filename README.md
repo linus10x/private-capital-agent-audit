@@ -165,7 +165,8 @@ The credibility tier. The golden corpus
 ([`tests/golden/`](tests/golden/)) holds **12 real, public SEC enforcement
 matters** — and for each enforcement theme, the relevant control is fed the
 failing construction the matter describes and **must flag it**. The library does
-not merely cite the law; it catches the exact conduct the SEC penalized.
+not merely cite the law; its tests check that each control flags the conduct
+the matter describes.
 
 | Theme | Matters in the corpus |
 |---|---|
