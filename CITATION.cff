@@ -34,10 +34,7 @@ abstract: >-
   loyalty). Includes a sub-vertical obligation map with
   primary-source-verified citations and a golden corpus of real public
   SEC enforcement actions wired as executable test fixtures. Zero runtime
-  dependencies; property-tested; mypy --strict clean. Patterns were
-  extracted from a multi-year private quantitative options research
-  program operating in paper-trading Phase 0 — no live capital has been
-  deployed.
+  dependencies; property-tested; mypy --strict clean.
 keywords:
   - AI governance
   - autonomous agents
